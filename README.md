@@ -1,6 +1,6 @@
 # 30XX Remake
 
-![new30xxLogo](30XXremake\30XXremake\30XXremakeContent\textures\new30xxLogo.png)
+![new30xxLogo](30XXremake/30XXremake/30XXremakeContent/textures/new30xxLogo.png)
 
 
 
