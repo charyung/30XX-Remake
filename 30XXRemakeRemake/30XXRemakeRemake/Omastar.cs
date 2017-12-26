@@ -13,12 +13,14 @@ namespace _30XXRemakeRemake
     class Omastar : Fighter
     {
 
-        private List<Texture2D> moveTextures = new List<Texture2D>();
+        private List<Texture2D> charTextures = new List<Texture2D>();
 
-        public Omastar(Vector2 position, ContentManager Content) : base(position, 1, 51, 44)
+        public Omastar(Vector2 position, ContentManager Content) : base(position, 51, 44, 1)
         {
-            idle = new Animation("Textures/omastar2", new Rectangle(0, 0, 51, 44), 1, "H");
-            walking = new Animation("Textures/omastar2", new Rectangle(0, 0, 51, 44), 2, "H", 200f);
+            LoadTextures(Content);
+
+            idle = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 1, "H");
+            walking = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 2, "H", 200f);
 
             //NeutralB: Rock Blast; Projectile
             //SideB: Scald; Ranged
@@ -26,16 +28,19 @@ namespace _30XXRemakeRemake
             //DownB: Whirlpool; Ranged
         }
 
-        public void LoadMoveTextures(ContentManager Content)
+        public void LoadTextures(ContentManager Content)
         {
+
+            //Walking/idle
+            charTextures.Add(Content.Load<Texture2D>("Textures/omastar2"));
             //NeutralB
-            moveTextures.Add(Content.Load<Texture2D>("Textures/rockBlast"));
+            charTextures.Add(Content.Load<Texture2D>("Textures/rockBlast"));
             //SideB
-            moveTextures.Add(Content.Load<Texture2D>("Textures/scald"));
+            charTextures.Add(Content.Load<Texture2D>("Textures/scald"));
             //UpB
-            moveTextures.Add(Content.Load<Texture2D>("Textures/surf"));
+            charTextures.Add(Content.Load<Texture2D>("Textures/surf"));
             //DownB
-            moveTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
+            charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
         }
 
         private void NeutralB(GameTime gt)
@@ -46,7 +51,7 @@ namespace _30XXRemakeRemake
 
             if (facing == "Left")
             {
-                new ProjectileMove(-30, "Left", "Textures/RockBlast", new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
+                //new ProjectileMove(-30, "Left", "Textures/RockBlast", new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
             }
             
         }

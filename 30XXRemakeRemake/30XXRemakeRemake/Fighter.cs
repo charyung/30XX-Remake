@@ -53,9 +53,9 @@ namespace _30XXRemakeRemake
         ///Constructor for the Fighter class.
         ///</summary>
         ///<param name="position"> The position on the screen where the fighter is.</param>
-        ///<param name="speed"> The speed of this fighter. </param>
         ///<param name="sWidth"> The width of this fighter's sprite. </param>
         ///<param name="sHeight"> The height of thie fighter's sprite. </param>
+        ///<param name="speed"> The speed of this fighter. </param>
         public Fighter(Vector2 position, int sWidth, int sHeight, float speed)
         {
 
@@ -84,7 +84,7 @@ namespace _30XXRemakeRemake
             get { return facingVisual;  }
         }
 
-        public string Sprite
+        public Texture2D Sprite
         {
             get { return idle.SpriteTexture; }
         }

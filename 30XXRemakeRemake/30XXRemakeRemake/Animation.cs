@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework.Content;
 namespace _30XXRemakeRemake
 {
     class Animation
     {
-        string spriteTexture;
+        Texture2D spriteTexture;
         float timer = 0f; //time before next frame
         float interval = 55f; //how long each frame lasts, in millseconds
         int currentFrame = 1;
@@ -23,7 +23,7 @@ namespace _30XXRemakeRemake
         Rectangle sourceRect;
         Vector2 origin;
 
-        public string SpriteTexture
+        public Texture2D SpriteTexture
         {
             get { return spriteTexture; }
             set { spriteTexture = value; }
@@ -50,7 +50,7 @@ namespace _30XXRemakeRemake
         ///<param name="nextFrame"> Whether the next frame is right of or below the current sprite frame on the spritesheet. Can be either "V" for vertical or "H" for horizontal. </param>
         ///<param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
         ///<param name="currentFrame"> The index of the frame for the animation to start on. </param>
-        public Animation(string texture, Rectangle sprite, int numberOfFrames, string nextFrame, float interval = 55f, int currentFrame = 0)
+        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, float interval = 55f, int currentFrame = 0)
         {
 
             this.spriteTexture = texture;

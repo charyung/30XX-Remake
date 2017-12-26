@@ -56,9 +56,9 @@ namespace _30XXRemakeRemake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            whirlpool = new Animation("Textures/whirlpool", new Rectangle(0, 0, 10, 120), 3, "V", 10);
+            whirlpool = new Animation(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(0, 0, 10, 120), 3, "V", 10);
 
-            a = new Animation("Textures/omastar2", new Rectangle(0, 0, 51, 44), 2, "H");
+            a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H");
 
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
@@ -113,11 +113,11 @@ namespace _30XXRemakeRemake
             spriteBatch.Draw(tt.Img, new Vector2(0, 0), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
             //spriteBatch.Draw(Content.Load<Texture2D>(whirlpool.SpriteTexture), new Vector2(10, 10), whirlpool.SourceRect, Color.White);
 
-            spriteBatch.Draw(Content.Load<Texture2D>(a.SpriteTexture), b, a.SourceRect, Color.White);
+            spriteBatch.Draw(a.SpriteTexture, b, a.SourceRect, Color.White);
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
             //spriteBatch.Draw(omastar.walking.SpriteTexture, omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
-            spriteBatch.Draw(Content.Load<Texture2D>(omastar.Sprite), omastar.Position, omastar.walking.SourceRect, Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
+            spriteBatch.Draw(omastar.Sprite, omastar.Position, omastar.walking.SourceRect, Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
             spriteBatch.End();
