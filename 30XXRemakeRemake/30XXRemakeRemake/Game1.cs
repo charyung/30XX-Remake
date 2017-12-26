@@ -42,6 +42,9 @@ namespace _30XXRemakeRemake
         //Texture2D whirlpool;
         Fighter omastar;
         Stage tt;
+        Animation a;
+        Vector2 b = new Vector2(10, 100);
+        
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -53,14 +56,16 @@ namespace _30XXRemakeRemake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            whirlpool = new Animation("Textures/whirlpool", 0, 0, 3, 10, 120, 10, "V");
+            whirlpool = new Animation("Textures/whirlpool", new Rectangle(0, 0, 10, 120), 3, "V", 10);
+
+            a = new Animation("Textures/omastar2", new Rectangle(0, 0, 51, 44), 2, "H");
 
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
             Physics.StageHitbox = tt.hbRect;
 
-            omastar = new Omastar(new Vector2(200, 10));
+            omastar = new Omastar(new Vector2(200, 10), Content);
             Physics.AddToCollisions(omastar, omastar.hitbox);
         }
 
@@ -86,7 +91,10 @@ namespace _30XXRemakeRemake
             // TODO: Add your update logic here
             //omastar.Movement(gameTime);
             omastar.Update(gameTime);
-            whirlpool.Animate(gameTime);
+            //whirlpool.Animate(gameTime);
+            a.Animate(gameTime);
+            b.X += (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            //omastar.walking.Animate(gameTime);
 
             base.Update(gameTime);
         }
@@ -103,10 +111,13 @@ namespace _30XXRemakeRemake
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             spriteBatch.Draw(tt.Img, new Vector2(0, 0), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(Content.Load<Texture2D>(whirlpool.SpriteTexture), new Vector2(10, 10), whirlpool.SourceRect, Color.White);
+            //spriteBatch.Draw(Content.Load<Texture2D>(whirlpool.SpriteTexture), new Vector2(10, 10), whirlpool.SourceRect, Color.White);
+
+            spriteBatch.Draw(Content.Load<Texture2D>(a.SpriteTexture), b, a.SourceRect, Color.White);
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
-            spriteBatch.Draw(Content.Load<Texture2D>(omastar.Sprite), omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
+            //spriteBatch.Draw(omastar.walking.SpriteTexture, omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
+            spriteBatch.Draw(Content.Load<Texture2D>(omastar.Sprite), omastar.Position, omastar.walking.SourceRect, Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
             spriteBatch.End();
