@@ -2,6 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+/*TODO:
+ * - how do projectile rendering???
+ *  - Consider looking into DrawableGameComponents
+ *  - Apparently that's a bad idea though?? hmm
+ */
+
+
 namespace _30XXRemakeRemake
 {
     /// <summary>
@@ -44,6 +51,8 @@ namespace _30XXRemakeRemake
         Stage tt;
         Animation a;
         Vector2 b = new Vector2(10, 100);
+        Texture2D c;
+        bool d = false;
         
 
         /// <summary>
@@ -56,10 +65,10 @@ namespace _30XXRemakeRemake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            whirlpool = new Animation(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(0, 0, 10, 120), 3, "V", 10);
+            whirlpool = new Animation(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(0, 0, 10, 120), 3, "V", true, 10);
 
-            a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H");
-
+            a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
+            c = Content.Load<Texture2D>("Textures/auraSphere");
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
@@ -97,6 +106,15 @@ namespace _30XXRemakeRemake
             //omastar.walking.Animate(gameTime);
 
             base.Update(gameTime);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                d = true;
+            }
+            else
+            {
+                d = false;
+            }
         }
 
         /// <summary>
@@ -120,6 +138,12 @@ namespace _30XXRemakeRemake
             spriteBatch.Draw(omastar.Sprite, omastar.Position, omastar.walking.SourceRect, Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
+
+            if (d)
+            {
+                spriteBatch.Draw(c, new Rectangle(10, 50, 30, 30), Color.White);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

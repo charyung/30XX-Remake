@@ -11,7 +11,12 @@ namespace _30XXRemakeRemake
     class ProjectileMove: Move
     {
         //dem parameters
-        public ProjectileMove(float accel, string direction, string sprite, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f) : base(direction, sprite, hitbox, frames, nextFrame, user, dmg, kb, kbAngle, pauseUser, interval = 55f)
+        public ProjectileMove(float accel, string direction, Texture2D sprite, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f) : base(direction, sprite, hitbox, frames, nextFrame, user, dmg, kb, kbAngle, pauseUser, interval = 55f)
+        {
+
+        }
+
+        public void Update(GameTime gt)
         {
 
         }

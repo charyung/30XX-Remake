@@ -10,7 +10,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _30XXRemakeRemake
 {
-    class Fighter
+    //abstract, in case I forget in the future:
+    //- As a class, it means it can't be called on its own
+    //- As a method, it means that it has to be derived by a child class before being called
+    abstract class Fighter
     {
         ///<summary>
         ///A class for each species of fighters.
@@ -143,11 +146,24 @@ namespace _30XXRemakeRemake
             //position.Y += accel.Y;
         }
 
+        private void Attack(GameTime gt, SpriteBatch spriteBatch)
+        {
+            if (currKBS.IsKeyDown(Keys.Z))
+            {
+                NeutralB(gt, spriteBatch);
+            }
+        }
+
         private void Jump(GameTime gt)
         {
             isJumping = true;
             vel.Y = Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * -speed * 5;
         }
+
+        protected abstract void NeutralB(GameTime gt, SpriteBatch spriteBatch);
+        //protected abstract void SideB();
+        //protected abstract void UpB();
+        //protected abstract void DownB();
 
         public void Update(GameTime gt)
         {

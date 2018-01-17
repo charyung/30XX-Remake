@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
 {
-    class Physics
+    static class Physics
     {
         //so unlike Flixel, XNA doesn't have all the fancy physics stuff alreadys set up, so I'll have to make my own (aka copy Flixel's)
         /* Todo:
@@ -17,7 +17,7 @@ namespace _30XXRemakeRemake
          */
 
         //For now I'll also put the initialization stuff here for organization. Might be a good idea to move this stuff to the one that XNA comes with.
-        static public void Initialize()
+        static Physics()
         {
             //stage.img
         }

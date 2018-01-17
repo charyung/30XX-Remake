@@ -14,14 +14,17 @@ namespace _30XXRemakeRemake
         float interval = 55f; //how long each frame lasts, in millseconds
         int currentFrame = 1;
         int numberOfFrames = 1;
-        Rectangle sprite;
-        int sX = 0;
+        int sX = 0; //sX and Y are the X and Y coordinates (in pixel) in which the starting frame, on the spritesheet, is located.
         int sY = 0;
         int sWidth = 0;
         int sHeight = 0;
         string nextFrame = ""; //Whether the next frame is right of or below the current sprite frame on the spritesheet. So for example, whirlpool.png would be vertical.
         Rectangle sourceRect;
-        Vector2 origin;
+        bool loop;
+        bool finished = false; //Whether the animation has finished and is ready to be removed
+        //Vector2 origin; //the fuck is this for??
+
+        //Animation HAS NO POSITION property because a position is a property of an object itself, not of its animation.
 
         public Texture2D SpriteTexture
         {
@@ -35,10 +38,20 @@ namespace _30XXRemakeRemake
             set { sourceRect = value; }
         }
 
-        public Vector2 Origin
+        /*public Vector2 Origin
         {
             get { return origin; }
             set { origin = value; }
+        }*/
+
+        public Vector2 Location
+        {
+            get { return new Vector2(sX, sY);  }
+        }
+
+        public bool Finished
+        {
+            get { return finished; }
         }
 
         ///<summary>
@@ -50,7 +63,8 @@ namespace _30XXRemakeRemake
         ///<param name="nextFrame"> Whether the next frame is right of or below the current sprite frame on the spritesheet. Can be either "V" for vertical or "H" for horizontal. </param>
         ///<param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
         ///<param name="currentFrame"> The index of the frame for the animation to start on. </param>
-        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, float interval = 55f, int currentFrame = 0)
+        ///<param name="loop"> Indicates whether the animation loops or just plays once. </param>
+        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, bool loop = false, float interval = 55f, int currentFrame = 0)
         {
 
             this.spriteTexture = texture;
@@ -60,6 +74,7 @@ namespace _30XXRemakeRemake
             this.nextFrame = nextFrame;
             this.interval = interval;
             this.currentFrame = currentFrame;
+            this.loop = loop;
 
             this.SourceRect = new Rectangle(0, 0, sWidth, sHeight);
             //origin = new Vector2(sourceRect.Width / 2, sourceRect.Height / 2);
@@ -79,13 +94,29 @@ namespace _30XXRemakeRemake
             
             timer += (float)gt.ElapsedGameTime.TotalMilliseconds;
 
-            if (timer > interval)
+            /*Basically what happens here is:
+             * This function gets called every frame.
+             * First, timer adds the amount of time between the last calling and this calling.
+             * Then, if timer is greater than interval, ie it's time to switch frames, then it does so:
+             * It looks to the next frame, and set the current frame to that (that's the code block above this).
+             * If it's the last frame, then something different happens depending on if the animation is set to loop.
+             * If it is set to loop, thene the animation goes back to the first frame.
+             * If it's set to not loop, then it flags that it is finished and stops animating.
+             */
+            if (timer > interval && !finished)
             {
                 currentFrame++;
 
                 if (currentFrame >= numberOfFrames)
                 {
-                    currentFrame = 0;
+                    if (loop)
+                    {
+                        currentFrame = 0;
+                    }
+                    else
+                    {
+                        finished = true;
+                    }
                 }
                 timer = 0f;
             }

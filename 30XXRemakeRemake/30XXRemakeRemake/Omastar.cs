@@ -19,8 +19,8 @@ namespace _30XXRemakeRemake
         {
             LoadTextures(Content);
 
-            idle = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 1, "H");
-            walking = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 2, "H", 200f);
+            idle = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 1, "H", false);
+            walking = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 2, "H", true, 200f);
 
             //NeutralB: Rock Blast; Projectile
             //SideB: Scald; Ranged
@@ -42,18 +42,29 @@ namespace _30XXRemakeRemake
             //DownB
             charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
         }
-
-        private void NeutralB(GameTime gt)
+    
+        protected override void NeutralB(GameTime gt, SpriteBatch spriteBatch)
         {
             //Rock Blast: Projectile
             cdLength = 1;
             onCooldown = true;
 
+            Move nb;
+
+            //Here we spawn the attack according to the direction that the Omastar was facing when he used the attack.
+            //The spritebatch draws are different because the left facing sprite has to be flipped first.
             if (facing == "Left")
             {
-                //new ProjectileMove(-30, "Left", "Textures/RockBlast", new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
+                nb = new ProjectileMove(-30, "Left", charTextures[1], new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
+
+                spriteBatch.Draw(nb.Sprite, nb.Hitbox, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0); 
             }
-            
+            else
+            {
+                nb = new ProjectileMove(30, "Right", charTextures[1], new Rectangle((int)position.X + 46, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
+
+                spriteBatch.Draw(nb.Sprite, nb.Hitbox, Color.White);
+            }
         }
     }
 }

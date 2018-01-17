@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
 {
-    class Move
+    abstract class Move
     {
         protected string direction;
         protected Fighter user;
@@ -17,12 +17,20 @@ namespace _30XXRemakeRemake
         protected bool pauseUser = false;
         private float interval = 0;
         public Rectangle hitbox;
-        private Animation ani;
+        protected Animation ani;
+        private Vector2 position;
 
         //ok are you ready
         //for some spaghetti
 
         //Later when I figure out vectors more, I can use that to replace kb and kbAngle
+
+        
+
+        public Vector2 Position
+        {
+            get { return position; }
+        }
         
         /// <summary>
         /// A class for a single attack. This is a superclass and really never actually gets called anywhere directly.
@@ -38,7 +46,7 @@ namespace _30XXRemakeRemake
         /// <param name="kbAngle"> The angle, in radians, in which this attack sends the target. </param>
         /// <param name="pauseUser"> Whether the usage of this attack prevents the user from moving. </param>
         /// <param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
-        public Move(string direction, string sprite, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f)
+        public Move(string direction, Texture2D sprite, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f)
         {
             this.direction = direction;
             this.hitbox = hitbox;
@@ -50,7 +58,17 @@ namespace _30XXRemakeRemake
             this.interval = interval;
 
             //just make animation along with this class upon loading?
-            ani = new Animation(sprite, new Rectangle(0, 0, hitbox.Width, hitbox.Height), frames, nextFrame, interval);
+            ani = new Animation(sprite, new Rectangle(0, 0, hitbox.Width, hitbox.Height), frames, nextFrame, false, interval);
+        }
+
+        public Texture2D Sprite
+        {
+            get { return ani.SpriteTexture; }
+        }
+
+        public Rectangle Hitbox
+        {
+            get { return hitbox; }
         }
     }
 }
