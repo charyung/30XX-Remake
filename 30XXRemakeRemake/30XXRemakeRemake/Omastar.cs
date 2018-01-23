@@ -43,11 +43,11 @@ namespace _30XXRemakeRemake
             charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
         }
     
-        protected override void NeutralB(GameTime gt, SpriteBatch spriteBatch)
+        protected override void NeutralB(GameTime gt)
         {
             //Rock Blast: Projectile
-            cdLength = 1;
-            onCooldown = true;
+            //cdLength = 1;
+            //onCooldown = true;
 
             Move nb;
 
@@ -57,13 +57,15 @@ namespace _30XXRemakeRemake
             {
                 nb = new ProjectileMove(-30, "Left", charTextures[1], new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
 
-                spriteBatch.Draw(nb.Sprite, nb.Hitbox, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0); 
+                Drawer.AddToDrawList(nb.SpriteTexture, nb.Position, true);
+                //spriteBatch.Draw(nb.Sprite, nb.Hitbox, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0); 
             }
             else
             {
                 nb = new ProjectileMove(30, "Right", charTextures[1], new Rectangle((int)position.X + 46, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
 
-                spriteBatch.Draw(nb.Sprite, nb.Hitbox, Color.White);
+                Drawer.AddToDrawList(nb.SpriteTexture, nb.Position, false);
+                //spriteBatch.Draw(nb.Sprite, nb.Hitbox, Color.White);
             }
         }
     }

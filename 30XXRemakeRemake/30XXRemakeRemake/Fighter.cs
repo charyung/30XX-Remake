@@ -146,11 +146,11 @@ namespace _30XXRemakeRemake
             //position.Y += accel.Y;
         }
 
-        private void Attack(GameTime gt, SpriteBatch spriteBatch)
+        private void Attack(GameTime gt)
         {
             if (currKBS.IsKeyDown(Keys.Z))
             {
-                NeutralB(gt, spriteBatch);
+                NeutralB(gt);
             }
         }
 
@@ -160,7 +160,7 @@ namespace _30XXRemakeRemake
             vel.Y = Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * -speed * 5;
         }
 
-        protected abstract void NeutralB(GameTime gt, SpriteBatch spriteBatch);
+        protected abstract void NeutralB(GameTime gt);
         //protected abstract void SideB();
         //protected abstract void UpB();
         //protected abstract void DownB();
@@ -186,6 +186,7 @@ namespace _30XXRemakeRemake
             this.hitbox.X = (int)this.position.X;
             this.hitbox.Y = (int)this.position.Y;
 
+            Attack(gt);
 
             //Physics.Gravity(this.position);
         }

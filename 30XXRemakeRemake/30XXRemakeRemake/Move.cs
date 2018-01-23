@@ -18,19 +18,12 @@ namespace _30XXRemakeRemake
         private float interval = 0;
         public Rectangle hitbox;
         protected Animation ani;
-        private Vector2 position;
 
         //ok are you ready
         //for some spaghetti
 
         //Later when I figure out vectors more, I can use that to replace kb and kbAngle
-
-        
-
-        public Vector2 Position
-        {
-            get { return position; }
-        }
+        //Also maybe later I can separate hitbox and location rect
         
         /// <summary>
         /// A class for a single attack. This is a superclass and really never actually gets called anywhere directly.
@@ -61,12 +54,17 @@ namespace _30XXRemakeRemake
             ani = new Animation(sprite, new Rectangle(0, 0, hitbox.Width, hitbox.Height), frames, nextFrame, false, interval);
         }
 
-        public Texture2D Sprite
+        public Animation SpriteTexture
         {
-            get { return ani.SpriteTexture; }
+            get { return ani; }
         }
 
         public Rectangle Hitbox
+        {
+            get { return hitbox; }
+        }
+
+        public Rectangle Position
         {
             get { return hitbox; }
         }

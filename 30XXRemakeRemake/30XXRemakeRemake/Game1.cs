@@ -51,8 +51,6 @@ namespace _30XXRemakeRemake
         Stage tt;
         Animation a;
         Vector2 b = new Vector2(10, 100);
-        Texture2D c;
-        bool d = false;
         
 
         /// <summary>
@@ -68,7 +66,6 @@ namespace _30XXRemakeRemake
             whirlpool = new Animation(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(0, 0, 10, 120), 3, "V", true, 10);
 
             a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
-            c = Content.Load<Texture2D>("Textures/auraSphere");
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
@@ -103,18 +100,8 @@ namespace _30XXRemakeRemake
             //whirlpool.Animate(gameTime);
             a.Animate(gameTime);
             b.X += (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
-            //omastar.walking.Animate(gameTime);
 
             base.Update(gameTime);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Z))
-            {
-                d = true;
-            }
-            else
-            {
-                d = false;
-            }
         }
 
         /// <summary>
@@ -132,6 +119,7 @@ namespace _30XXRemakeRemake
             //spriteBatch.Draw(Content.Load<Texture2D>(whirlpool.SpriteTexture), new Vector2(10, 10), whirlpool.SourceRect, Color.White);
 
             spriteBatch.Draw(a.SpriteTexture, b, a.SourceRect, Color.White);
+
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
             //spriteBatch.Draw(omastar.walking.SpriteTexture, omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
@@ -139,11 +127,7 @@ namespace _30XXRemakeRemake
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
 
-            if (d)
-            {
-                spriteBatch.Draw(c, new Rectangle(10, 50, 30, 30), Color.White);
-            }
-
+            Drawer.Draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);

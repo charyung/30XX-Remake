@@ -11,13 +11,14 @@ namespace _30XXRemakeRemake
     static class Drawer
     {
         //
-        static List<Tuple<Animation, Rectangle>> drawList = new List<Tuple<Animation, Rectangle>>(); //A list of animations to draw, along with their locations
+        static List<Tuple<Animation, Rectangle, bool>> drawList = new List<Tuple<Animation, Rectangle, bool>>(); //A list of animations to draw, along with their locations
         static List<int> removeList = new List<int>(); //A list of the indices of the animations to remove from the list
 
         //Like its name suggests, this class draws things. Its purpose is mainly to keep clutter away from the main code in Game1.cs.
         static Drawer()
         {
             //nothing here so far
+            
         }
 
         /// <summary>
@@ -25,19 +26,21 @@ namespace _30XXRemakeRemake
         /// </summary>
         /// <param name="animation"> The animation to draw. </param>
         /// <param name="position"> The destinationRectangle of the animation. </param>
-        static public void AddToDrawList(Animation animation, Rectangle position)
+        /// <param name="flip"> Whether the sprite is flipped. If not, then the sprite faces right. </param>
+        static public void AddToDrawList(Animation animation, Rectangle position, bool flip)
         {
-            drawList.Add(new Tuple<Animation, Rectangle>(animation, position));
+            drawList.Add(new Tuple<Animation, Rectangle, bool>(animation, position, flip));
         }
 
-        static public void Draw(SpriteBatch spriteBatch)
+        static public void Draw(SpriteBatch spriteBatch, GameTime gt)
         {
             //Loop through all the items in drawList and draw them all, but only if they're not flagged for remove.
             for (int i = 0; i < drawList.Count; i++)
             {
                 if (!drawList[i].Item1.Finished)
                 {
-                    spriteBatch.Draw(drawList[i].Item1.SpriteTexture, drawList[i].Item2, Color.White);
+                    spriteBatch.Draw(drawList[i].Item1.SpriteTexture, drawList[i].Item2, drawList[i].Item1.SourceRect, Color.White);
+                    drawList[i].Item1.Animate(gt);
                 }
                 else
                 {
