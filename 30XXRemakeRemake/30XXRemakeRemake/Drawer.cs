@@ -10,48 +10,55 @@ namespace _30XXRemakeRemake
 {
     static class Drawer
     {
-        //
-        static List<Tuple<Animation, Rectangle, bool>> drawList = new List<Tuple<Animation, Rectangle, bool>>(); //A list of animations to draw, along with their locations
+		static public List<Tuple<Move, SpriteEffects>> drawListMoves = new List<Tuple<Move, SpriteEffects>>(); //A list of moves to draw
         static List<int> removeList = new List<int>(); //A list of the indices of the animations to remove from the list
+        static public double m = 0;
 
         //Like its name suggests, this class draws things. Its purpose is mainly to keep clutter away from the main code in Game1.cs.
         static Drawer()
         {
             //nothing here so far
-            
         }
 
         /// <summary>
         /// Adds an animation to the list of animations to draw.
         /// </summary>
-        /// <param name="animation"> The animation to draw. </param>
-        /// <param name="position"> The destinationRectangle of the animation. </param>
+		/// <param name="move"> The move to add to the list. </param>
         /// <param name="flip"> Whether the sprite is flipped. If not, then the sprite faces right. </param>
-        static public void AddToDrawList(Animation animation, Rectangle position, bool flip)
-        {
-            drawList.Add(new Tuple<Animation, Rectangle, bool>(animation, position, flip));
-        }
+		static public void AddToDrawList(Move move, bool flip)
+		{
+			SpriteEffects f;
+
+			if (flip)
+			{
+				f = SpriteEffects.FlipHorizontally;
+			}
+			else
+			{
+				f = SpriteEffects.None;
+			}
+
+			drawListMoves.Add(new Tuple<Move, SpriteEffects>(move, f));
+		}
 
         static public void Draw(SpriteBatch spriteBatch, GameTime gt)
         {
-            //Loop through all the items in drawList and draw them all, but only if they're not flagged for remove.
-            for (int i = 0; i < drawList.Count; i++)
+            //Loop through all the items in drawListMoves and draw them all, but only if they're not flagged for remove.
+            for (int i = 0; i < drawListMoves.Count; i++)
             {
-                if (!drawList[i].Item1.Finished)
-                {
-                    spriteBatch.Draw(drawList[i].Item1.SpriteTexture, drawList[i].Item2, drawList[i].Item1.SourceRect, Color.White);
-                    drawList[i].Item1.Animate(gt);
-                }
+				spriteBatch.Draw(drawListMoves[i].Item1.SpriteTexture.SpriteTexture, drawListMoves[i].Item1.Position, drawListMoves[i].Item1.SpriteTexture.SourceRect, Color.White, 0, Vector2.Zero, drawListMoves[i].Item2, 0);
+				drawListMoves[i].Item1.SpriteTexture.Animate(gt);
+                /*}
                 else
                 {
-                    removeList.Add(i);
-                }
+                    //removeList.Add(i);
+                }*/
             }
 
-            //Loop through the removeList and remove all the items at those indices from drawList. This is because it's kinda weird to remove something from a list while it's being enumerated through.
+            //Loop through the removeList and remove all the items at those indices from drawListMoves. This is because it's kinda weird to remove something from a list while it's being enumerated through.
             foreach (int index in removeList)
             {
-                drawList.RemoveAt(index);
+                drawListMoves.RemoveAt(index);
             }
 
             //Then clear the removeList so we don't remove something we shouldn't in the next iteration.

@@ -22,16 +22,23 @@ namespace _30XXRemakeRemake
             //stage.img
         }
 
+        static private Rectangle stageHitbox;
+        static private Dictionary<Fighter, Rectangle> hitboxesAndOwners = new Dictionary<Fighter, Rectangle>();
+
+        static private List<IUpdatable> UpdateList = new List<IUpdatable>();
+
         /// <summary>
-        /// Calculates the Fighter's velocity.
+        /// Calculates the object's velocity.
         /// </summary>
-        /// <param name="vel"> The Fighter's current velocity. </param>
-        /// <param name="accel"> The Fighter's current acceleration. </param>
-        /// <param name="maxVel"> The quickest the Fighter can go. </param>
-        /// <param name="gt"> The games' GameTime. It's probably called "gameTime". </param>
+        /// <param name="vel"> The object's current velocity. </param>
+        /// <param name="accel"> The object's current acceleration. </param>
+        /// <param name="maxVel"> The quickest the object can go. </param>
+        /// <param name="gt"> The games' GameTime. It's probably called "gameTime" or "gt". </param>
         /// <returns></returns>
         static public float CalcVel(float vel, float accel, float maxVel, GameTime gt)
         {
+			//this is kind of shit lol
+			//Try googling some physics formulas
             if (accel != 0)
             {
                 vel += accel * (float)gt.ElapsedGameTime.TotalMilliseconds;
@@ -55,9 +62,6 @@ namespace _30XXRemakeRemake
          * The stage hitbox is referred to separately. 
          * collisions() checks for collisions between everything (usually the stage and a fighter).
          */
-
-        static private Rectangle stageHitbox;
-        static private Dictionary<Fighter, Rectangle> hitboxesAndOwners = new Dictionary<Fighter, Rectangle>();
 
         /// <summary>
         /// Adds an entry of the Fighter and its hitbox to the dict of hitboxes, to be used to check for collision.
@@ -84,10 +88,25 @@ namespace _30XXRemakeRemake
             }
         }
 
+        static public void AddToUpdateList(IUpdatable item)
+        {
+            UpdateList.Add(item);
+        }
+
+        //A function to update everything
+        static public void Update(GameTime gt)
+        {
+            foreach (IUpdatable item in UpdateList)
+            {
+                item.Update(gt);
+            }
+        }
+
         static public Rectangle StageHitbox
         {
             get { return stageHitbox; }
             set { stageHitbox = value; }
         }
+
     }
 }

@@ -13,7 +13,7 @@ namespace _30XXRemakeRemake
     //abstract, in case I forget in the future:
     //- As a class, it means it can't be called on its own
     //- As a method, it means that it has to be derived by a child class before being called
-    abstract class Fighter
+    abstract class Fighter : IUpdatable
     {
         ///<summary>
         ///A class for each species of fighters.
@@ -21,8 +21,8 @@ namespace _30XXRemakeRemake
 
         public bool charging = false; //Whether the fighter is charging an attack (e.g. Aura Sphere on Lucario)
         public bool onCooldown = false; //Whether the fighter is on cooldown. If true, the fighter can't use any move.
-        protected double cdLength = 0.25; //How long the fighter goes on cooldown for. Possibly move to Move so each move can have different CD?
-        protected double cdTimer = 0; //some weird makeshift timer thing? try figuring out ElapsedGameTime first
+        protected float cdLength; //How long the fighter is on cooldown for. Measured in milliseconds.
+        private float cdTimer; //The timer that Cooldown uses. This can't be declared in the function itself because then it would reset every time update is called.
         protected double jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
         protected bool isJumping = false; //Simply, whether the fighter is jumping.
         protected float speed = 0; // The fighter's current speed.
@@ -87,7 +87,7 @@ namespace _30XXRemakeRemake
             get { return facingVisual;  }
         }
 
-        public Texture2D Sprite
+        public Texture2D SpriteTexture
         {
             get { return idle.SpriteTexture; }
         }
@@ -97,7 +97,7 @@ namespace _30XXRemakeRemake
             prevKBS = currKBS;
             currKBS = Keyboard.GetState();
 
-            if (!paused && !onCooldown)
+            if (!paused)
             {
                 if (currKBS.IsKeyDown(Keys.Left))
                 {
@@ -146,30 +146,65 @@ namespace _30XXRemakeRemake
             //position.Y += accel.Y;
         }
 
+        //A function for all the attacks
         private void Attack(GameTime gt)
         {
-            if (currKBS.IsKeyDown(Keys.Z))
+            if (!paused && !onCooldown)
             {
-                NeutralB(gt);
+                if (!prevKBS.IsKeyDown(Keys.Z) && currKBS.IsKeyDown(Keys.Z))
+                {
+					//if ((!prevKBS.IsKeyDown(Keys.Left) && !prevKBS.IsKeyDown(Keys.Right)) && )
+					if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
+					{
+						SideB();
+						onCooldown = true;
+						paused = true;
+					}
+					else
+					{
+						NeutralB();
+						onCooldown = true;
+					}
+						
+                }
             }
         }
 
+        //A function for jumping. TODO: Implement multi jumps.
         private void Jump(GameTime gt)
         {
             isJumping = true;
             vel.Y = Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * -speed * 5;
         }
 
-        protected abstract void NeutralB(GameTime gt);
-        //protected abstract void SideB();
+        //How long the fighter goes on cooldown for. Calculated in milliseconds.
+        protected void Cooldown(GameTime gt)
+        {
+            if (cdTimer < cdLength)
+            {
+                cdTimer += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            }
+            else
+            {
+                onCooldown = false;
+                cdTimer = 0;
+            }
+        }
+
+		//Change the paused status to the opposite. Just that simple.
+		protected void PauseUnpause(GameTime gt)
+		{
+			paused = !paused;
+		}
+
+        protected abstract void NeutralB();
+        protected abstract void SideB();
         //protected abstract void UpB();
         //protected abstract void DownB();
 
         public void Update(GameTime gt)
         {
             //if this fighter isn't colliding with the stage, then gravity does its thing
-            float spriteBottom = this.position.Y + this.hitbox.Height;
-            //if (spriteBottom <= Physics.StageHitbox.Y)
             if (!hitbox.Intersects(Physics.StageHitbox))
             {
                 vel.Y = Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed;
@@ -180,6 +215,7 @@ namespace _30XXRemakeRemake
                 vel.Y = 0;
                 jumpCount = 2;
             }
+            
 
             this.Movement(gt);
             position.Y += vel.Y;
@@ -187,6 +223,11 @@ namespace _30XXRemakeRemake
             this.hitbox.Y = (int)this.position.Y;
 
             Attack(gt);
+
+            if (onCooldown)
+            {
+                Cooldown(gt);
+            }
 
             //Physics.Gravity(this.position);
         }

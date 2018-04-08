@@ -35,7 +35,7 @@ namespace _30XXRemakeRemake
         public Rectangle SourceRect
         {
             get { return sourceRect; }
-            set { sourceRect = value; }
+            set { SetSourceBox(value); }
         }
 
         /*public Vector2 Origin
@@ -44,9 +44,9 @@ namespace _30XXRemakeRemake
             set { origin = value; }
         }*/
 
-        public Vector2 Location
+        public Vector2 SpritesheetLocation
         {
-            get { return new Vector2(sX, sY);  }
+            get { return new Vector2(sX, sY); }
         }
 
         public bool Finished
@@ -115,6 +115,7 @@ namespace _30XXRemakeRemake
                     }
                     else
                     {
+                        currentFrame--;
                         finished = true;
                     }
                 }
@@ -123,5 +124,15 @@ namespace _30XXRemakeRemake
 
             //origin = new Vector2(sourceRect.Width / 2, sourceRect.Height / 2);
         }
+
+		/// <summary>
+		/// Set the size of this animation's source rectangle.
+		/// </summary>
+		/// <param name="size"> How much to increase the box by. Use negative numbers to indicate a decrease in size. Because of some weird setter shenanigans, just set 0 for X and Y lul</param>
+		private void SetSourceBox(Rectangle size)
+		{
+			sourceRect.Width += (int)size.Width;
+			sourceRect.Height += (int)size.Height;
+		}
     }
 }

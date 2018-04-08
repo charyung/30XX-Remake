@@ -43,30 +43,47 @@ namespace _30XXRemakeRemake
             charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
         }
     
-        protected override void NeutralB(GameTime gt)
+        protected override void NeutralB()
         {
             //Rock Blast: Projectile
-            //cdLength = 1;
-            //onCooldown = true;
+            cdLength = 500;
 
-            Move nb;
+            ProjectileMove nb;
 
             //Here we spawn the attack according to the direction that the Omastar was facing when he used the attack.
             //The spritebatch draws are different because the left facing sprite has to be flipped first.
             if (facing == "Left")
             {
-                nb = new ProjectileMove(-30, "Left", charTextures[1], new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
-
-                Drawer.AddToDrawList(nb.SpriteTexture, nb.Position, true);
-                //spriteBatch.Draw(nb.Sprite, nb.Hitbox, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0); 
+                nb = new ProjectileMove(new Vector2(-0.01f, 0), "Left", charTextures[1], new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), new Rectangle((int)position.X - 25, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
+				Drawer.AddToDrawList(nb, true);
             }
             else
             {
-                nb = new ProjectileMove(30, "Right", charTextures[1], new Rectangle((int)position.X + 46, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
-
-                Drawer.AddToDrawList(nb.SpriteTexture, nb.Position, false);
-                //spriteBatch.Draw(nb.Sprite, nb.Hitbox, Color.White);
+                nb = new ProjectileMove(new Vector2(0.01f, 0), "Right", charTextures[1], new Rectangle((int)position.X + 46, (int)position.Y + 14, 30, 30), new Rectangle((int)position.X + 46, (int)position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
+				Drawer.AddToDrawList(nb, false);
             }
-        }
+
+			Physics.AddToUpdateList(nb);
+		}
+
+        protected override void SideB()
+        {
+            cdLength = 200;
+
+            MeleeMove nb;
+
+            if (facing == "Left")
+            {
+				nb = new MeleeMove("Left", charTextures[2], new Rectangle((int)position.X + 14, (int)position.Y + 35, 5, 10), new Rectangle((int)position.X + 14, (int)position.Y + 35, 5, 10), 6, "V", this, 20, 10, Math.PI / 6, true);
+				Drawer.AddToDrawList(nb, true);
+            }
+			else
+			{
+				nb = new MeleeMove("Left", charTextures[2], new Rectangle((int)position.X + 36, (int)position.Y + 35, 5, 10), new Rectangle((int)position.X + 36, (int)position.Y + 35, 5, 10), 6, "V", this, 20, 10, Math.PI / 6, true);
+				Drawer.AddToDrawList(nb, false);
+			}
+
+			Physics.AddToUpdateList(nb);
+		}
     }
 }

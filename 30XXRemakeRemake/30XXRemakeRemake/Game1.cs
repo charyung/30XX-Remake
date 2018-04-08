@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -100,6 +103,9 @@ namespace _30XXRemakeRemake
             //whirlpool.Animate(gameTime);
             a.Animate(gameTime);
             b.X += (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            //Drawer.m += gameTime.ElapsedGameTime.TotalSeconds;
+
+            Physics.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -123,9 +129,17 @@ namespace _30XXRemakeRemake
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
             //spriteBatch.Draw(omastar.walking.SpriteTexture, omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
-            spriteBatch.Draw(omastar.Sprite, omastar.Position, omastar.walking.SourceRect, Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
+            spriteBatch.Draw(omastar.SpriteTexture, omastar.Position, omastar.walking.SourceRect, Color.White, 0f, Vector2.Zero, 1, omastar.Facing, 0f);
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
+
+            spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), Drawer.m.ToString(), new Vector2(600, 10), Color.White);
+
+            /*for (int i = 0; i < Drawer.drawList.Count; i++)
+            {
+                spriteBatch.Draw(Drawer.drawList[i].Item1.SpriteTexture, Drawer.drawList[i].Item2, Drawer.drawList[i].Item1.SourceRect, Color.White);
+                //new Vector2((int)Drawer.m, 100)
+            }*/
 
             Drawer.Draw(spriteBatch, gameTime);
             spriteBatch.End();
