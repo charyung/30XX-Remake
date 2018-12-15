@@ -197,6 +197,14 @@ namespace _30XXRemakeRemake
 			paused = !paused;
 		}
 
+		protected void CheckPause(Move move)
+		{
+			while (!move.SpriteTexture.Finished)
+			{
+				paused = true;
+			}
+		}
+
         protected abstract void NeutralB();
         protected abstract void SideB();
         //protected abstract void UpB();

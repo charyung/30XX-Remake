@@ -70,20 +70,21 @@ namespace _30XXRemakeRemake
         {
             cdLength = 200;
 
-            MeleeMove nb;
+            MeleeMove sb;
 
+			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
             if (facing == "Left")
             {
-				nb = new MeleeMove("Left", charTextures[2], new Rectangle((int)position.X + 14, (int)position.Y + 35, 5, 10), new Rectangle((int)position.X + 14, (int)position.Y + 35, 5, 10), 6, "V", this, 20, 10, Math.PI / 6, true);
-				Drawer.AddToDrawList(nb, true);
+				sb = new MeleeMove("Left", charTextures[2], new Rectangle((int)position.X - 46, (int)position.Y + 35, 60, 5), new Rectangle((int)position.X + 14, (int)position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
+				Drawer.AddToDrawList(sb, true);
             }
 			else
 			{
-				nb = new MeleeMove("Left", charTextures[2], new Rectangle((int)position.X + 36, (int)position.Y + 35, 5, 10), new Rectangle((int)position.X + 36, (int)position.Y + 35, 5, 10), 6, "V", this, 20, 10, Math.PI / 6, true);
-				Drawer.AddToDrawList(nb, false);
+				sb = new MeleeMove("Left", charTextures[2], new Rectangle((int)position.X + 36, (int)position.Y + 35, 60, 5), new Rectangle((int)position.X + 36, (int)position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
+				Drawer.AddToDrawList(sb, false);
 			}
 
-			Physics.AddToUpdateList(nb);
+			Physics.AddToUpdateList(sb);
 		}
     }
 }

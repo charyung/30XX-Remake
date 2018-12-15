@@ -18,7 +18,6 @@ C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
-C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\obj\x86\Debug\30XXRemakeRemake.csprojResolveAssemblyReference.cache
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\obj\x86\Debug\30XXRemakeRemake.csproj.CoreCompileInputs.cache
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\obj\x86\Debug\30XXRemakeRemake.exe
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\obj\x86\Debug\30XXRemakeRemake.pdb
@@ -63,3 +62,5 @@ C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug\Content\Textures\whirlpool2.xnb
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug\Content\Fonts\Courier New.xnb
 C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\bin\Windows\x86\Debug\30XXRemakeRemake.xml
+C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\obj\x86\Debug\30XXRemakeRemake.csprojAssemblyReference.cache
+C:\Users\CY\source\repos\30XXRemakeRemake\30XXRemakeRemake\obj\x86\Debug\30XXRemakeRemake.csproj.CopyComplete
