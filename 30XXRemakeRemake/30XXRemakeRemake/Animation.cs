@@ -83,14 +83,7 @@ namespace _30XXRemakeRemake
         public void Animate(GameTime gt)
         {
             //Redefine the source rectangle such that it takes the correct part of the spritesheet for the current frame.
-            if (nextFrame == "V")
-            {
-                sourceRect = new Rectangle(sX, currentFrame * sHeight, sWidth, sHeight);
-            }
-            else
-            {
-                sourceRect = new Rectangle(currentFrame * sWidth, sY, sWidth, sHeight);
-            }
+			 sourceRect = (nextFrame == "V") ? new Rectangle(sX, currentFrame * sHeight, sWidth, sHeight) : new Rectangle(currentFrame * sWidth, sY, sWidth, sHeight);
             
             timer += (float)gt.ElapsedGameTime.TotalMilliseconds;
 

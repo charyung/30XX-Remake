@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/CY/source/repos/30XXRemakeRemake/30XXRemakeRemake/Content/Textures/surf.png</SourceFile>
+  <SourceFile>C:/Users/CY/Documents/GitHub/30XX-Remake/30XXRemakeRemake/30XXRemakeRemake/Content/Textures/surf.png</SourceFile>
   <SourceTime>2016-05-29T18:29:26-04:00</SourceTime>
-  <DestFile>C:/Users/CY/source/repos/30XXRemakeRemake/30XXRemakeRemake/Content/bin/Windows/Textures/surf.xnb</DestFile>
-  <DestTime>2017-12-07T16:32:44.2090687-05:00</DestTime>
+  <DestFile>C:/Users/CY/Documents/GitHub/30XX-Remake/30XXRemakeRemake/30XXRemakeRemake/Content/bin/Windows/Textures/surf.xnb</DestFile>
+  <DestTime>2018-12-15T17:47:02.7663141-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
