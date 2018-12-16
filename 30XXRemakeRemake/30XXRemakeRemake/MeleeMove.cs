@@ -17,9 +17,9 @@ namespace _30XXRemakeRemake
 
 		public void Update(GameTime gt)
 		{
-			ani.SourceRect = new Rectangle(Point.Zero, new Point(3, 0));
+			spriteTexture.SourceRect = new Rectangle(Point.Zero, new Point(3, 0));
 			//update with kb logic	
-			if (ani.Finished)
+			if (spriteTexture.Finished)
 			{
 				user.paused = false;
 			}

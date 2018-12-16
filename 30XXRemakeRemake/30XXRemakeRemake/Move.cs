@@ -18,7 +18,7 @@ namespace _30XXRemakeRemake
         private float interval = 0;
         protected Rectangle position;
         public Rectangle hitbox;
-        protected Animation ani;
+        protected Animation spriteTexture;
 
         //ok are you ready
         //for some spaghetti
@@ -54,12 +54,12 @@ namespace _30XXRemakeRemake
             this.interval = interval;
 
             //just make animation along with this class upon loading?
-            ani = new Animation(sprite, new Rectangle(0, 0, hitbox.Width, hitbox.Height), frames, nextFrame, false, interval);
+            spriteTexture = new Animation(sprite, new Rectangle(0, 0, hitbox.Width, hitbox.Height), frames, nextFrame, false, interval);
         }
 
         public Animation SpriteTexture
         {
-            get { return ani; }
+            get { return spriteTexture; }
         }
 
         public Rectangle Hitbox

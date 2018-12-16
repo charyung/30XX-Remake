@@ -93,7 +93,7 @@ namespace _30XXRemakeRemake
              * Then, if timer is greater than interval, ie it's time to switch frames, then it does so:
              * It looks to the next frame, and set the current frame to that (that's the code block above this).
              * If it's the last frame, then something different happens depending on if the animation is set to loop.
-             * If it is set to loop, thene the animation goes back to the first frame.
+             * If it is set to loop, then the animation goes back to the first frame.
              * If it's set to not loop, then it flags that it is finished and stops animating.
              */
             if (timer > interval && !finished)

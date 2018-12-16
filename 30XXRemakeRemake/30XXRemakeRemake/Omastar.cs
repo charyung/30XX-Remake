@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
 {
     class Omastar : Fighter
     {
+	    private readonly List<Texture2D> charTextures = new List<Texture2D>();
 
-        private List<Texture2D> charTextures = new List<Texture2D>();
-
-        public Omastar(Vector2 position, ContentManager Content) : base(position, 51, 44, 1)
+	    public Omastar(Vector2 position, ContentManager Content) : base(position, 51, 44, 1)
         {
             LoadTextures(Content);
 
@@ -28,7 +23,7 @@ namespace _30XXRemakeRemake
             //DownB: Whirlpool; Ranged
         }
 
-        public void LoadTextures(ContentManager Content)
+	    public void LoadTextures(ContentManager Content)
         {
 
             //Walking/idle
@@ -42,8 +37,8 @@ namespace _30XXRemakeRemake
             //DownB
             charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
         }
-    
-        protected override void NeutralB()
+
+	    protected override void NeutralB()
         {
             //Rock Blast: Projectile
             cdLength = 500;
@@ -66,7 +61,7 @@ namespace _30XXRemakeRemake
 			Physics.AddToUpdateList(nb);
 		}
 
-        protected override void SideB()
+	    protected override void SideB()
         {
             cdLength = 200;
 
