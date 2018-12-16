@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
 {
-    abstract class Move
+    abstract class Move : IUpdatable
     {
         protected string direction;
         protected Fighter user;
@@ -72,5 +72,8 @@ namespace _30XXRemakeRemake
             get { return position; }
         }
 
+	    public void Update(GameTime gt)
+	    {
+	    }
     }
 }

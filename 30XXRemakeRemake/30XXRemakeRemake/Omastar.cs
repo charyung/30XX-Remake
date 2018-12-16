@@ -35,7 +35,7 @@ namespace _30XXRemakeRemake
             //UpB
             charTextures.Add(Content.Load<Texture2D>("Textures/surf"));
             //DownB
-            charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool2"));
+            charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool"));
         }
 
 	    protected override void NeutralB()
@@ -65,7 +65,7 @@ namespace _30XXRemakeRemake
         {
             cdLength = 200;
 
-            MeleeMove sb;
+	        MeleeMove sb;
 
 			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
             if (facing == "Left")
@@ -81,5 +81,18 @@ namespace _30XXRemakeRemake
 
 			Physics.AddToUpdateList(sb);
 		}
-    }
+
+	    protected override void DownB()
+	    {
+		    cdLength = 700;
+
+		    this.paused = true;
+
+			MeleeMove db = new MeleeMove("Right", charTextures[4], new Rectangle((int)position.X - 35, (int)position.Y + 34, 120, 10), new Rectangle((int)position.X - 35, (int)position.Y, 120, 10), 13, "V", this, 30, 10, Math.PI/6, true);
+
+		    Drawer.AddToDrawList(db, false);
+		    Physics.AddToUpdateList(db);
+		}
+
+	}
 }

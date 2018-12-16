@@ -64,7 +64,11 @@ namespace _30XXRemakeRemake
 			hitbox = new Rectangle((int)position.X, (int)position.Y, sWidth, sHeight);
 		}
 
-		public Vector2 Position { get => position; set => position = value; }
+		public Vector2 Position
+		{
+			get { return position; }
+			set { position = value; }
+		}
 
 		//for debugging purposes, delete later
 		public Vector2 Vel
@@ -89,50 +93,44 @@ namespace _30XXRemakeRemake
 			prevKBS = currKBS;
 			currKBS = Keyboard.GetState();
 
-			if (!paused)
+			if (currKBS.IsKeyDown(Keys.Left))
 			{
-				if (currKBS.IsKeyDown(Keys.Left))
-				{
-					vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, gt);
-					position.X += -vel.X * speed;
-					walking.Animate(gt);
-					facing = "Left";
-					facingVisual = SpriteEffects.FlipHorizontally;
-				}
-				else if (currKBS.IsKeyDown(Keys.Right))
-				{
-					vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, gt);
-					position.X += vel.X * speed;
-					walking.Animate(gt);
-					facing = "Right";
-					facingVisual = SpriteEffects.None;
-				}
-				else
-				{
-					idle.Animate(gt);
-					vel.X = 0;
-				}
+				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, gt);
+				position.X += -vel.X * speed;
+				walking.Animate(gt);
+				facing = "Left";
+				facingVisual = SpriteEffects.FlipHorizontally;
+			}
+			else if (currKBS.IsKeyDown(Keys.Right))
+			{
+				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, gt);
+				position.X += vel.X * speed;
+				walking.Animate(gt);
+				facing = "Right";
+				facingVisual = SpriteEffects.None;
+			}
+			else
+			{
+				idle.Animate(gt);
+				vel.X = 0;
+			}
 
-				if (currKBS.IsKeyDown(Keys.Up))
-				{
-					//this is a really shitty jump, fix plz
+			if (currKBS.IsKeyDown(Keys.Up))
+			{
+				//this is a really shitty jump, fix plz
 
-					if (!isJumping)
-					{
-						//position.Y -= Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed * 3;
-						if (jumpCount > 0 && prevKBS.IsKeyUp(Keys.Up))
-						{
-							//position.Y = vel.Y * (float)gt.ElapsedGameTime.TotalSeconds;
-							Jump(gt);
-							jumpCount--;
-						}
-					}
-				}
-				else if (currKBS.IsKeyDown(Keys.Down))
+					//position.Y -= Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed * 3;
+				if (!isJumping && jumpCount > 0 && prevKBS.IsKeyUp(Keys.Up))
 				{
-					//Some fastfalling stuff, but let's deal with this later.
-					//position.Y += Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed;
+					//position.Y = vel.Y * (float)gt.ElapsedGameTime.TotalSeconds;
+					Jump(gt);
+					jumpCount--;
 				}
+			}
+			else if (currKBS.IsKeyDown(Keys.Down))
+			{
+				//Some fastfalling stuff, but let's deal with this later.
+				//position.Y += Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed;
 			}
 
 			//position.Y += accel.Y;
@@ -141,27 +139,31 @@ namespace _30XXRemakeRemake
 		//A function for all the attacks
 		private void Attack(GameTime gt)
 		{
-			if (!paused && !onCooldown)
+			if (paused || onCooldown)
+				return;
+			
+			if (!prevKBS.IsKeyDown(Keys.Z) && currKBS.IsKeyDown(Keys.Z))
 			{
-				if (!prevKBS.IsKeyDown(Keys.Z) && currKBS.IsKeyDown(Keys.Z))
+				//if ((!prevKBS.IsKeyDown(Keys.Left) && !prevKBS.IsKeyDown(Keys.Right)) && )
+				if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
 				{
-					//if ((!prevKBS.IsKeyDown(Keys.Left) && !prevKBS.IsKeyDown(Keys.Right)) && )
-					if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
-					{
-						SideB();
-						onCooldown = true;
-						paused = true;
-					}
-					else
-					{
-						NeutralB();
-						onCooldown = true;
-					}
-
+					SideB();
+					onCooldown = true;
+					paused = true;
 				}
+				else if (currKBS.IsKeyDown(Keys.Down))
+				{
+					DownB();
+				}
+				else
+				{
+					NeutralB();
+					onCooldown = true;
+				}
+
 			}
 		}
-
+		
 		//A function for jumping. TODO: Implement multi jumps.
 		private void Jump(GameTime gt)
 		{
@@ -200,7 +202,7 @@ namespace _30XXRemakeRemake
 		protected abstract void NeutralB();
 		protected abstract void SideB();
 		//protected abstract void UpB();
-		//protected abstract void DownB();
+		protected abstract void DownB();
 
 		public void Update(GameTime gt)
 		{
@@ -216,8 +218,11 @@ namespace _30XXRemakeRemake
 				jumpCount = 2;
 			}
 
+			if (!paused)
+			{
+				Movement(gt);
+			}
 
-			Movement(gt);
 			position.Y += vel.Y;
 			hitbox.X = (int)position.X;
 			hitbox.Y = (int)position.Y;

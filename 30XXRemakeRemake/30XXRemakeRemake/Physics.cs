@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace _30XXRemakeRemake
 {
     static class Physics
     {
-	    private static readonly Dictionary<Fighter, Rectangle> hitboxesAndOwners = new Dictionary<Fighter, Rectangle>();
+	    private static readonly Dictionary<Fighter, Rectangle> HitboxesAndOwners = new Dictionary<Fighter, Rectangle>();
 
 	    private static readonly List<IUpdatable> UpdateList = new List<IUpdatable>();
 	    //so unlike Flixel, XNA doesn't have all the fancy physics stuff already set up, so I'll have to make my own (aka copy Flixel's)
@@ -35,7 +36,7 @@ namespace _30XXRemakeRemake
         {
 			//this is kind of shit lol
 			//Try googling some physics formulas
-            if (accel != 0)
+            if (Math.Abs(accel) > 0.0001)
             {
                 vel += accel * (float)gt.ElapsedGameTime.TotalMilliseconds;
             }
@@ -66,7 +67,7 @@ namespace _30XXRemakeRemake
         /// <param name="hitbox"> The Fighter's hitbox. </param>
         public static void AddToCollisions(Fighter source, Rectangle hitbox)
         {
-            hitboxesAndOwners.Add(source, hitbox);
+            HitboxesAndOwners.Add(source, hitbox);
         }
 
 	    /// <summary>
@@ -75,7 +76,7 @@ namespace _30XXRemakeRemake
         public static void CollisionsWithStage()
         {
             //Possibly find a method that isn't highly inefficient?
-            foreach (KeyValuePair<Fighter, Rectangle> hbObject in hitboxesAndOwners)
+            foreach (KeyValuePair<Fighter, Rectangle> hbObject in HitboxesAndOwners)
             {
                 if (hbObject.Value.Intersects(StageHitbox))
                 {
@@ -88,6 +89,11 @@ namespace _30XXRemakeRemake
         {
             UpdateList.Add(item);
         }
+
+	    public static void RemoveFromUpdateList(IUpdatable item)
+	    {
+		    UpdateList.Remove(item);
+	    }
 
 	    //A function to update everything
 	    public static void Update(GameTime gt)

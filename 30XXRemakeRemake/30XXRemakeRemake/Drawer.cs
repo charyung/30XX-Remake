@@ -43,6 +43,7 @@ namespace _30XXRemakeRemake
 	            }
 	            else
 	            {
+		            Physics.RemoveFromUpdateList(drawListMoves[i].Item1);
 					drawListMoves.RemoveAt(i);
 				}
 

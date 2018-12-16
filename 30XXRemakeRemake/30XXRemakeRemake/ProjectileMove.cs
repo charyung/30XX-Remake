@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
 {
-    class ProjectileMove: Move, IUpdatable
+    class ProjectileMove: Move
     {
         Vector2 vel = new Vector2(1, 0);
         Vector2 accel;
