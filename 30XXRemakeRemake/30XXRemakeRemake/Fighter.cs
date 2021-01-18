@@ -42,13 +42,11 @@ namespace _30XXRemakeRemake
 		//onGround is a special isColliding to see if this fighter's bottom is colliding with a ground.
 		private bool onGround = false; //In Flixel, there was some weird ass bitwise operation magic here. Let's learn about that more before copying.
 
-		protected List<Move> activeAttacks = new List<Move>();
-
 		KeyboardState prevKBS;
 		KeyboardState currKBS;
 
 		//public List<animation> animations = new List<animation>();
-		protected List<Move> moves = new List<Move>();
+		protected List<Attack> moves = new List<Attack>();
 
 		///<summary>
 		///Constructor for the Fighter class.
@@ -150,7 +148,7 @@ namespace _30XXRemakeRemake
 			if (paused || onCooldown)
 				return;
 			
-			if (!prevKBS.IsKeyDown(Keys.Z) && currKBS.IsKeyDown(Keys.Z))
+			if (currKBS.IsKeyDown(Keys.Z))
 			{
 				//if ((!prevKBS.IsKeyDown(Keys.Left) && !prevKBS.IsKeyDown(Keys.Right)) && )
 				if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
@@ -197,7 +195,7 @@ namespace _30XXRemakeRemake
 			paused = !paused;
 		}
 
-		protected void CheckPause(Move move)
+		protected void CheckPause(Attack move)
 		{
 			while (!move.SpriteTexture.Finished)
 			{

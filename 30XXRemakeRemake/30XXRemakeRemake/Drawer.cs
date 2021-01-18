@@ -7,7 +7,7 @@ namespace _30XXRemakeRemake
 {
     static class Drawer
     {
-		public static List<Tuple<Move, SpriteEffects>> drawListMoves = new List<Tuple<Move, SpriteEffects>>(); //A list of moves to draw
+		public static List<Tuple<Attack, SpriteEffects>> drawListMoves = new List<Tuple<Attack, SpriteEffects>>(); //A list of moves to draw
         public static double m = 0;
 
         //Like its name suggests, this class draws things. Its purpose is mainly to keep clutter away from the main code in Game1.cs.
@@ -21,11 +21,11 @@ namespace _30XXRemakeRemake
         /// </summary>
 		/// <param name="move"> The move to add to the list. </param>
         /// <param name="flip"> Whether the sprite is flipped. If not, then the sprite faces right. </param>
-		public static void AddToDrawList(Move move, bool flip)
+		public static void AddToDrawList(Attack move, bool flip)
 		{
 			SpriteEffects f = flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-			drawListMoves.Add(new Tuple<Move, SpriteEffects>(move, f));
+			drawListMoves.Add(new Tuple<Attack, SpriteEffects>(move, f));
 		}
 
         public static void Draw(SpriteBatch spriteBatch, GameTime gt)
