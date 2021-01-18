@@ -74,7 +74,7 @@ namespace _30XXRemakeRemake
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
             Physics.StageHitbox = tt.hbRect;
 
-            omastar = new Omastar(new Vector2(200, 10), Content);
+            omastar = new Omastar(new Vector2(200, 100), Content);
             Physics.AddToCollisions(omastar, omastar.hitbox);
         }
 

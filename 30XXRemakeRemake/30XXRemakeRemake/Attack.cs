@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
 {
-    abstract class Move : IUpdatable
+    abstract class Attack : IUpdatable
     {
         protected string direction;
         protected Fighter user;
@@ -41,7 +41,7 @@ namespace _30XXRemakeRemake
         /// <param name="kbAngle"> The angle, in radians, in which this attack sends the target. </param>
         /// <param name="pauseUser"> Whether the usage of this attack prevents the user from moving. </param>
         /// <param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
-        public Move(string direction, Texture2D sprite, Rectangle position, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f)
+        public Attack(string direction, Texture2D sprite, Rectangle position, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f)
         {
             this.direction = direction;
             this.position = position;
@@ -72,7 +72,7 @@ namespace _30XXRemakeRemake
             get { return position; }
         }
 
-	    public void Update(GameTime gt)
+	    public virtual void Update(GameTime gt)
 	    {
 	    }
     }

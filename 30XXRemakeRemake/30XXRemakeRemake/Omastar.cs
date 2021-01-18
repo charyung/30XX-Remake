@@ -8,14 +8,14 @@ namespace _30XXRemakeRemake
 {
     class Omastar : Fighter
     {
-	    private readonly List<Texture2D> charTextures = new List<Texture2D>();
+	    private readonly List<Texture2D> _charTextures = new List<Texture2D>();
 
 	    public Omastar(Vector2 position, ContentManager Content) : base(position, 51, 44, 1)
         {
             LoadTextures(Content);
 
-            idle = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 1, "H", false);
-            walking = new Animation(charTextures[0], new Rectangle(0, 0, 51, 44), 2, "H", true, 200f);
+            idle = new Animation(_charTextures[0], new Rectangle(0, 0, 51, 44), 1, "H", false);
+            walking = new Animation(_charTextures[0], new Rectangle(0, 0, 51, 44), 2, "H", true, 200f);
 
             //NeutralB: Rock Blast; Projectile
             //SideB: Scald; Ranged
@@ -27,15 +27,15 @@ namespace _30XXRemakeRemake
         {
 
             //Walking/idle
-            charTextures.Add(Content.Load<Texture2D>("Textures/omastar2"));
+            _charTextures.Add(Content.Load<Texture2D>("Textures/omastar2"));
             //NeutralB
-            charTextures.Add(Content.Load<Texture2D>("Textures/rockBlast"));
+            _charTextures.Add(Content.Load<Texture2D>("Textures/rockBlast"));
             //SideB
-            charTextures.Add(Content.Load<Texture2D>("Textures/scald"));
+            _charTextures.Add(Content.Load<Texture2D>("Textures/scald"));
             //UpB
-            charTextures.Add(Content.Load<Texture2D>("Textures/surf2"));
+            _charTextures.Add(Content.Load<Texture2D>("Textures/surf2"));
             //DownB
-            charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool"));
+            _charTextures.Add(Content.Load<Texture2D>("Textures/whirlpool"));
         }
 
 	    protected override void NeutralB()
@@ -51,12 +51,12 @@ namespace _30XXRemakeRemake
             //The spritebatch draws are different because the left facing sprite has to be flipped first.
             if (facing == "Left")
             {
-                nb = new ProjectileMove(new Vector2(-0.01f, 0), "Left", charTextures[1], new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
+                nb = new ProjectileMove(new Vector2(-0.01f, 0), "Left", _charTextures[1], new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
 				Drawer.AddToDrawList(nb, true);
             }
             else
             {
-                nb = new ProjectileMove(new Vector2(0.01f, 0), "Right", charTextures[1], new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
+                nb = new ProjectileMove(new Vector2(0.01f, 0), "Right", _charTextures[1], new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
 				Drawer.AddToDrawList(nb, false);
             }
 
@@ -75,12 +75,12 @@ namespace _30XXRemakeRemake
 			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
 			if (facing == "Left")
             {
-				sb = new MeleeMove("Left", charTextures[2], new Rectangle((int)Position.X - 46, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 14, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
+				sb = new MeleeMove("Left", _charTextures[2], new Rectangle((int)Position.X - 46, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 14, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
 				Drawer.AddToDrawList(sb, true);
             }
 			else
 			{
-				sb = new MeleeMove("Right", charTextures[2], new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
+				sb = new MeleeMove("Right", _charTextures[2], new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
 				Drawer.AddToDrawList(sb, false);
 			}
 
@@ -95,18 +95,18 @@ namespace _30XXRemakeRemake
 
 		    if (facing == "Left")
 		    {
-			    ub = new MeleeMove("Left", charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
+			    ub = new MeleeMove("Left", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
 			    Drawer.AddToDrawList(ub, true);
 			}
 		    else
 		    {
-				ub = new MeleeMove("Right", charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
+				ub = new MeleeMove("Right", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
 			    Drawer.AddToDrawList(ub, false);
 			}
 
 		    Physics.AddToUpdateList(ub);
 
-			accel = new Vector2(0, -0.001f);
+			vel = new Vector2(0, -1f);
 		}
 
 	    protected override void DownB()
@@ -115,7 +115,7 @@ namespace _30XXRemakeRemake
 
 		    this.paused = true;
 
-			MeleeMove db = new MeleeMove("Right", charTextures[4], new Rectangle((int)Position.X - 35, (int)Position.Y + 34, 120, 10), new Rectangle((int)Position.X - 35, (int)Position.Y, 120, 10), 13, "V", this, 30, 10, Math.PI/6, true);
+			MeleeMove db = new MeleeMove("Right", _charTextures[4], new Rectangle((int)Position.X - 35, (int)Position.Y + 34, 120, 10), new Rectangle((int)Position.X - 35, (int)Position.Y, 120, 10), 13, "V", this, 30, 10, Math.PI/6, true);
 
 		    Drawer.AddToDrawList(db, false);
 		    Physics.AddToUpdateList(db);

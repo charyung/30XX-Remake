@@ -42,6 +42,8 @@ namespace _30XXRemakeRemake
 		//onGround is a special isColliding to see if this fighter's bottom is colliding with a ground.
 		private bool onGround = false; //In Flixel, there was some weird ass bitwise operation magic here. Let's learn about that more before copying.
 
+		protected List<Move> activeAttacks = new List<Move>();
+
 		KeyboardState prevKBS;
 		KeyboardState currKBS;
 

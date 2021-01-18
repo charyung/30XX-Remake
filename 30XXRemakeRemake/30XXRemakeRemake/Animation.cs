@@ -111,8 +111,9 @@ namespace _30XXRemakeRemake
 		/// <param name="size"> How much to increase the box by. Use negative numbers to indicate a decrease in size. Because of some weird setter shenanigans, just set 0 for X and Y lul</param>
 		private void SetSourceBox(Rectangle size)
 		{
-			sourceRect.Width += (int)size.Width;
-			sourceRect.Height += (int)size.Height;
+			(_, _, int width, int height) = size;
+			sourceRect.Width += width;
+			sourceRect.Height += height;
 		}
     }
 }
