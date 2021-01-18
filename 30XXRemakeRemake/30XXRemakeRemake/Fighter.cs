@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,19 +19,18 @@ namespace _30XXRemakeRemake
 		public bool charging = false; //Whether the fighter is charging an attack (e.g. Aura Sphere on Lucario)
 		public bool onCooldown = false; //Whether the fighter is on cooldown. If true, the fighter can't use any move.
 		protected float cdLength; //How long the fighter is on cooldown for. Measured in milliseconds.
-		private float cdTimer; //The timer that Cooldown uses. This can't be declared in the function itself because then it would reset every time update is called.
 		protected double jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
 		protected bool isJumping = false; //Simply, whether the fighter is jumping.
-		protected float speed = 0; // The fighter's current speed.
+		protected float speed = 0; // The fighter's own moving speed.
 		protected bool helpless = false; //Whether the fighter is in helpless. This is slightly different than onCooldown because a helpless fighter can't do anything but move.
 
 		public int percent = 0; //The percentage the fighter is at. The higher means the more injured they are.
 		public bool paused = false; //Pauses the fighter (i.e. can't do anything at all), usually is used as part of a stationary move like Whirlpool on Omastar.
 
-		private Vector2 vel = new Vector2(0, 0);
-		private Vector2 accel = new Vector2(1, 0.25f);
+		protected Vector2 vel = new Vector2(0, 0);
+		protected Vector2 accel = new Vector2(1, 0.25f);
 		//The Y parameter of maxVel is basically max jump height here, combined with accel.Y.
-		private Vector2 maxVel = new Vector2(3, 7);
+		protected Vector2 maxVel = new Vector2(3, 7);
 
 		protected Vector2 position;
 		protected Animation idle;
@@ -64,17 +64,23 @@ namespace _30XXRemakeRemake
 			hitbox = new Rectangle((int)position.X, (int)position.Y, sWidth, sHeight);
 		}
 
-		public Vector2 Position
+		internal Vector2 Position
 		{
 			get { return position; }
 			set { position = value; }
 		}
 
 		//for debugging purposes, delete later
-		public Vector2 Vel
+		internal Vector2 Vel
 		{
 			get { return vel; }
 			set { vel = value; }
+		}
+
+		internal Vector2 Accel
+		{
+			get { return accel; }
+			set { accel = value; }
 		}
 
 		//For all intents and purposes, the string version will never be accessed outside of this and its children classes (and facing, the variable, is protected rather than private anyways) so for the sake of convenicence, we call this Facing but actually refer to the SpriteEffects.
@@ -148,17 +154,18 @@ namespace _30XXRemakeRemake
 				if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
 				{
 					SideB();
-					onCooldown = true;
-					paused = true;
 				}
 				else if (currKBS.IsKeyDown(Keys.Down))
 				{
 					DownB();
 				}
+				else if (currKBS.IsKeyDown(Keys.Up))
+				{
+					UpB();
+				}
 				else
 				{
 					NeutralB();
-					onCooldown = true;
 				}
 
 			}
@@ -174,14 +181,11 @@ namespace _30XXRemakeRemake
 		//How long the fighter goes on cooldown for. Calculated in milliseconds.
 		protected void Cooldown(GameTime gt)
 		{
-			if (cdTimer < cdLength)
-			{
-				cdTimer += (float)gt.ElapsedGameTime.TotalMilliseconds;
-			}
-			else
+			cdLength -= Math.Min((float) gt.ElapsedGameTime.TotalMilliseconds, cdLength);
+
+			if (cdLength == 0)
 			{
 				onCooldown = false;
-				cdTimer = 0;
 			}
 		}
 
@@ -201,7 +205,7 @@ namespace _30XXRemakeRemake
 
 		protected abstract void NeutralB();
 		protected abstract void SideB();
-		//protected abstract void UpB();
+		protected abstract void UpB();
 		protected abstract void DownB();
 
 		public void Update(GameTime gt)
@@ -209,12 +213,12 @@ namespace _30XXRemakeRemake
 			//if this fighter isn't colliding with the stage, then gravity does its thing
 			if (!hitbox.Intersects(Physics.StageHitbox))
 			{
-				vel.Y = Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed;
+				Physics.Gravity(position, vel, accel, maxVel.Y, gt);
+				//Physics.Gravity(this, gt);
 				isJumping = false;
 			}
 			else
 			{
-				vel.Y = 0;
 				jumpCount = 2;
 			}
 
@@ -222,8 +226,7 @@ namespace _30XXRemakeRemake
 			{
 				Movement(gt);
 			}
-
-			position.Y += vel.Y;
+			
 			hitbox.X = (int)position.X;
 			hitbox.Y = (int)position.Y;
 
@@ -233,8 +236,6 @@ namespace _30XXRemakeRemake
 			{
 				Cooldown(gt);
 			}
-
-			//Physics.Gravity(this.position);
 		}
 
 		/*animations for fighters, basically a class which each fighter.cs child uses to add movement and attack animations, to avoid having a really long animation.cs class. Also stores them for neat storage and stuff

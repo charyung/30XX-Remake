@@ -1,60 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+
 namespace _30XXRemakeRemake
 {
     class Animation
     {
-        Texture2D spriteTexture;
-        float timer = 0f; //time before next frame
-        float interval = 55f; //how long each frame lasts, in millseconds
-        int currentFrame = 1;
-        int numberOfFrames = 1;
-        int sX = 0; //sX and Y are the X and Y coordinates (in pixel) in which the starting frame, on the spritesheet, is located.
-        int sY = 0;
-        int sWidth = 0;
-        int sHeight = 0;
-        string nextFrame = ""; //Whether the next frame is right of or below the current sprite frame on the spritesheet. So for example, whirlpool.png would be vertical.
-        Rectangle sourceRect;
-        bool loop;
-        bool finished = false; //Whether the animation has finished and is ready to be removed
-        //Vector2 origin; //the fuck is this for??
+	    int _currentFrame = 1;
+	    readonly float interval = 55f; //how long each frame lasts, in millseconds
+	    readonly bool loop;
+	    readonly string nextFrame = ""; //Whether the next frame is right of or below the current sprite frame on the spritesheet. So for example, whirlpool.png would be vertical.
+	    readonly int numberOfFrames = 1;
+	    readonly int sHeight = 0;
+	    Rectangle sourceRect;
+	    readonly int sWidth = 0;
+	    readonly int sX = 0; //sX and Y are the X and Y coordinates (in pixel) in which the starting frame, on the spritesheet, is located.
+	    readonly int sY = 0;
+	    float timer = 0f; //time before next frame
 
-        //Animation HAS NO POSITION property because a position is a property of an object itself, not of its animation.
-
-        public Texture2D SpriteTexture
-        {
-            get { return spriteTexture; }
-            set { spriteTexture = value; }
-        }
-
-        public Rectangle SourceRect
-        {
-            get { return sourceRect; }
-            set { SetSourceBox(value); }
-        }
-
-        /*public Vector2 Origin
-        {
-            get { return origin; }
-            set { origin = value; }
-        }*/
-
-        public Vector2 SpritesheetLocation
-        {
-            get { return new Vector2(sX, sY); }
-        }
-
-        public bool Finished
-        {
-            get { return finished; }
-        }
-
-        ///<summary>
+	    ///<summary>
         ///A single animation.
         ///</summary>
         ///<param name="texture"> The path to this animation's texture. </param>
@@ -62,28 +25,52 @@ namespace _30XXRemakeRemake
         ///<param name="numberOfFrames"> The number of frames the whole animation has. </param>
         ///<param name="nextFrame"> Whether the next frame is right of or below the current sprite frame on the spritesheet. Can be either "V" for vertical or "H" for horizontal. </param>
         ///<param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
-        ///<param name="currentFrame"> The index of the frame for the animation to start on. </param>
+        ///<param name="_currentFrame"> The index of the frame for the animation to start on. </param>
         ///<param name="loop"> Indicates whether the animation loops or just plays once. </param>
-        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, bool loop = false, float interval = 55f, int currentFrame = 0)
+        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, bool loop = false, float interval = 55f, int _currentFrame = 0)
         {
 
-            this.spriteTexture = texture;
+            this.SpriteTexture = texture;
             this.sWidth = sprite.Width;
             this.sHeight = sprite.Height;
             this.numberOfFrames = numberOfFrames;
             this.nextFrame = nextFrame;
             this.interval = interval;
-            this.currentFrame = currentFrame;
+            this._currentFrame = _currentFrame;
             this.loop = loop;
 
             this.SourceRect = new Rectangle(0, 0, sWidth, sHeight);
             //origin = new Vector2(sourceRect.Width / 2, sourceRect.Height / 2);
         }
+	    //Vector2 origin; //the fuck is this for??
 
-        public void Animate(GameTime gt)
+	    //Animation HAS NO POSITION property because a position is a property of an object itself, not of its animation.
+
+	    public Texture2D SpriteTexture { get; set; }
+
+	    public Rectangle SourceRect
+        {
+            get { return sourceRect; }
+            set { SetSourceBox(value); }
+        }
+
+	    /*public Vector2 Origin
+        {
+            get { return origin; }
+            set { origin = value; }
+        }*/
+
+	    public Vector2 SpritesheetLocation
+        {
+            get { return new Vector2(sX, sY); }
+        }
+
+	    public bool Finished { get; private set; } = false;
+
+	    public void Animate(GameTime gt)
         {
             //Redefine the source rectangle such that it takes the correct part of the spritesheet for the current frame.
-			 sourceRect = (nextFrame == "V") ? new Rectangle(sX, currentFrame * sHeight, sWidth, sHeight) : new Rectangle(currentFrame * sWidth, sY, sWidth, sHeight);
+			 sourceRect = (nextFrame == "V") ? new Rectangle(sX, _currentFrame * sHeight, sWidth, sHeight) : new Rectangle(_currentFrame * sWidth, sY, sWidth, sHeight);
             
             timer += (float)gt.ElapsedGameTime.TotalMilliseconds;
 
@@ -96,29 +83,29 @@ namespace _30XXRemakeRemake
              * If it is set to loop, then the animation goes back to the first frame.
              * If it's set to not loop, then it flags that it is finished and stops animating.
              */
-            if (timer > interval && !finished)
-            {
-                currentFrame++;
+	        if (timer < interval || Finished)
+		        return;
 
-                if (currentFrame >= numberOfFrames)
+            _currentFrame++;
+
+            if (_currentFrame >= numberOfFrames)
+            {
+                if (loop)
                 {
-                    if (loop)
-                    {
-                        currentFrame = 0;
-                    }
-                    else
-                    {
-                        currentFrame--;
-                        finished = true;
-                    }
+                    _currentFrame = 0;
                 }
-                timer = 0f;
+                else
+                {
+                    _currentFrame--;
+                    Finished = true;
+                }
             }
+            timer = 0f;
 
             //origin = new Vector2(sourceRect.Width / 2, sourceRect.Height / 2);
         }
 
-		/// <summary>
+	    /// <summary>
 		/// Set the size of this animation's source rectangle.
 		/// </summary>
 		/// <param name="size"> How much to increase the box by. Use negative numbers to indicate a decrease in size. Because of some weird setter shenanigans, just set 0 for X and Y lul</param>

@@ -38,7 +38,7 @@ namespace _30XXRemakeRemake
 			//Try googling some physics formulas
             if (Math.Abs(accel) > 0.0001)
             {
-                vel += accel * (float)gt.ElapsedGameTime.TotalMilliseconds;
+                vel += accel * (float)gt.ElapsedGameTime.TotalSeconds;
             }
 
             if (vel > maxVel)
@@ -49,9 +49,11 @@ namespace _30XXRemakeRemake
             return vel;
         }
 
-	    public static void Gravity(Vector2 pos)
+	    public static void Gravity(Vector2 pos, Vector2 vel, Vector2 accel, float maxVel, GameTime gt)
         {
-            pos.Y += 5;
+            accel.Y += 9.8f;
+	        vel.Y = CalcVel(vel.Y, accel.Y, maxVel, gt);
+	        pos.Y += vel.Y;
         }
 
 	    /* addToCollisions() and collisions() work together.
