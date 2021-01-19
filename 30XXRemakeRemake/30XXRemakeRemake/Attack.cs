@@ -19,6 +19,7 @@ namespace _30XXRemakeRemake
         protected Rectangle position;
         public Rectangle hitbox;
         protected Animation spriteTexture;
+        private bool _flip;
 
         //ok are you ready
         //for some spaghetti
@@ -40,8 +41,9 @@ namespace _30XXRemakeRemake
         /// <param name="kb"> The amount of knockback this attack does. </param>
         /// <param name="kbAngle"> The angle, in radians, in which this attack sends the target. </param>
         /// <param name="pauseUser"> Whether the usage of this attack prevents the user from moving. </param>
+        /// <param name="flip">Whether to flip the sprite or not</param>
         /// <param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
-        public Attack(string direction, Texture2D sprite, Rectangle position, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f)
+        public Attack(string direction, Texture2D sprite, Rectangle position, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, bool flip, float interval = 55f)
         {
             this.direction = direction;
             this.position = position;
@@ -51,6 +53,7 @@ namespace _30XXRemakeRemake
             this.kb = kb;
             this.kbAngle = kbAngle;
             this.pauseUser = pauseUser;
+            this._flip = flip;
             this.interval = interval;
 
             //just make animation along with this class upon loading?
@@ -75,5 +78,15 @@ namespace _30XXRemakeRemake
 	    public virtual void Update(GameTime gt)
 	    {
 	    }
+
+	    public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+	    {
+            SpriteEffects effect = _flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(spriteTexture.SpriteTexture, Position, spriteTexture.SourceRect, Color.White,
+			    0, Vector2.Zero, effect, 0);
+            spriteTexture.Animate(gameTime);
+        }
+
+	    internal virtual void Cleanup() {}
     }
 }

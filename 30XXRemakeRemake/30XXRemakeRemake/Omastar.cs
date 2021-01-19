@@ -49,16 +49,14 @@ namespace _30XXRemakeRemake
             //The spritebatch draws are different because the left facing sprite has to be flipped first.
             if (facing == "Left")
             {
-                nb = new ProjectileAttack(new Vector2(-0.01f, 0), "Left", _charTextures[1], new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
-				Drawer.AddToDrawList(nb, true);
+                nb = new ProjectileAttack(new Vector2(-0.01f, 0), "Left", _charTextures[1], new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true, true);
             }
             else
             {
-                nb = new ProjectileAttack(new Vector2(0.01f, 0), "Right", _charTextures[1], new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
-				Drawer.AddToDrawList(nb, false);
+                nb = new ProjectileAttack(new Vector2(0.01f, 0), "Right", _charTextures[1], new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true, false);
             }
 
-			Physics.AddToUpdateList(nb);
+			activeAttacks.Add((AttackTypes.NeutralSp, nb));
 		}
 
 	    protected override void SideB()
@@ -72,16 +70,15 @@ namespace _30XXRemakeRemake
 			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
 			if (facing == "Left")
             {
-				sb = new MeleeAttack("Left", _charTextures[2], new Rectangle((int)Position.X - 46, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 14, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
+				sb = new MeleeAttack("Left", _charTextures[2], new Rectangle((int)Position.X - 46, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 14, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true, true);
 				Drawer.AddToDrawList(sb, true);
             }
 			else
 			{
-				sb = new MeleeAttack("Right", _charTextures[2], new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
-				Drawer.AddToDrawList(sb, false);
+				sb = new MeleeAttack("Right", _charTextures[2], new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true, false);
 			}
 
-			Physics.AddToUpdateList(sb);
+			activeAttacks.Add((AttackTypes.SideSp, sb));
 		}
 
 	    protected override void UpB()
@@ -94,16 +91,14 @@ namespace _30XXRemakeRemake
 
 		    if (facing == "Left")
 		    {
-			    ub = new MeleeAttack("Left", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
-			    Drawer.AddToDrawList(ub, true);
+			    ub = new MeleeAttack("Left", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false, true);
 			}
 		    else
 		    {
-				ub = new MeleeAttack("Right", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
-			    Drawer.AddToDrawList(ub, false);
+				ub = new MeleeAttack("Right", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false, false);
 			}
 
-		    Physics.AddToUpdateList(ub);
+		    activeAttacks.Add((AttackTypes.SideSp, ub));
 
 			vel.Y = -15;
 		}
@@ -114,11 +109,63 @@ namespace _30XXRemakeRemake
 
 		    state = FighterStates.Paused;
 
-			MeleeAttack db = new MeleeAttack("Right", _charTextures[4], new Rectangle((int)Position.X - 35, (int)Position.Y + 34, 120, 10), new Rectangle((int)Position.X - 35, (int)Position.Y, 120, 10), 13, "V", this, 30, 10, Math.PI/6, true);
+			MeleeAttack db = new MeleeAttack("Right", _charTextures[4], new Rectangle((int)Position.X - 35, (int)Position.Y + 34, 120, 10), new Rectangle((int)Position.X - 35, (int)Position.Y, 120, 10), 13, "V", this, 30, 10, Math.PI/6, true, false);
 
-		    Drawer.AddToDrawList(db, false);
-		    Physics.AddToUpdateList(db);
+			activeAttacks.Add((AttackTypes.SideSp, db));
 		}
 
+	    public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+	    {
+		    spriteBatch.Draw(SpriteTexture, Position, walking.SourceRect, Color.White, 0f, Vector2.Zero, 1, Facing, 0f);
+
+		    foreach ((_, Attack attack) in activeAttacks)
+		    {
+				attack.Draw(spriteBatch, gameTime);
+		    }
+	    }
+
+	    public override void Update(GameTime gt)
+	    {
+			base.Update(gt);
+
+			int i = 0;
+
+			while (i < activeAttacks.Count)
+			{
+				(AttackTypes type, Attack attack) = activeAttacks[i];
+
+				bool removed = false;
+
+				switch (type)
+				{
+					case AttackTypes.NeutralSp:
+						if (attack.Position.X > Game1.SCREEN_WIDTH || attack.Position.X < 0)
+						{
+							activeAttacks.RemoveAt(i);
+							removed = true;
+						}
+
+						break;
+					default:
+						if (attack.SpriteTexture.Finished)
+						{
+							activeAttacks.RemoveAt(i);
+							removed = true;
+						}
+
+						break;
+				}
+
+				if (removed)
+				{
+					attack.Cleanup();
+				}
+				else
+				{
+					attack.Update(gt);
+					i++;
+				}
+			}
+	    }
 	}
 }

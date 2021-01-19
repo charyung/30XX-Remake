@@ -23,6 +23,14 @@ namespace _30XXRemakeRemake
 			Paused //Pauses the fighter (i.e. can't do anything at all), usually is used as part of a stationary move like Whirlpool on Omastar.
 		}
 
+		protected enum AttackTypes
+		{
+			NeutralSp,
+			UpSp,
+			SideSp,
+			DownSp,
+		}
+
 		protected float cdTimer; //How long the fighter is on cooldown for. Measured in milliseconds.
 		protected double jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
 		protected float speed = 0; // The fighter's own moving speed.
@@ -49,6 +57,8 @@ namespace _30XXRemakeRemake
 
 		KeyboardState prevKBS;
 		KeyboardState currKBS;
+
+		protected List<(AttackTypes type, Attack attack)> activeAttacks = new List<(AttackTypes type, Attack attack)>();
 
 		///<summary>
 		///Constructor for the Fighter class.
@@ -178,12 +188,19 @@ namespace _30XXRemakeRemake
 			cdTimer -= Math.Min((float) gt.ElapsedGameTime.TotalMilliseconds, cdTimer);
 		}
 
+		internal void Unpause()
+		{
+			state = FighterStates.Normal;
+		}
+
 		protected abstract void NeutralB();
 		protected abstract void SideB();
 		protected abstract void UpB();
 		protected abstract void DownB();
 
-		public void Update(GameTime gt)
+		public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
+
+		public virtual void Update(GameTime gt)
 		{
 
 			//if this fighter isn't colliding with the stage, then gravity does its thing

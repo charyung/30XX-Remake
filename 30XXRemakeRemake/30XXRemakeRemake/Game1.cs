@@ -9,8 +9,9 @@ using Microsoft.Xna.Framework.Input;
  * - how do projectile rendering???
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
- * - Make side B fly across the screen
+ * . Make side B fly across the screen
  * - Fix: Player falls to different height every time after jumping
+ * . Fix: Add unpause after melee attack finishes
  */
 
 
@@ -24,6 +25,9 @@ namespace _30XXRemakeRemake
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        internal static int SCREEN_WIDTH = 1050;
+        internal static int SCREEN_HEIGHT = 750;
+
         /// <summary>
         /// Game.
         /// </summary>
@@ -32,8 +36,8 @@ namespace _30XXRemakeRemake
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1050;  // set this value to the desired width of your window
-            graphics.PreferredBackBufferHeight = 750;   // set this value to the desired height of your window
+            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;   // set this value to the desired height of your window
             graphics.ApplyChanges();
         }
 
@@ -68,8 +72,6 @@ namespace _30XXRemakeRemake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            whirlpool = new Animation(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(0, 0, 10, 120), 3, "V", true, 10);
-
             a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
@@ -131,7 +133,7 @@ namespace _30XXRemakeRemake
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
             //spriteBatch.Draw(omastar.walking.SpriteTexture, omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
-            spriteBatch.Draw(omastar.SpriteTexture, omastar.Position, omastar.walking.SourceRect, Color.White, 0f, Vector2.Zero, 1, omastar.Facing, 0f);
+            omastar.Draw(spriteBatch, gameTime);
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
 
