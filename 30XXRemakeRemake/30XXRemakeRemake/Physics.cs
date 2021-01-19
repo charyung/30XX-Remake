@@ -49,11 +49,11 @@ namespace _30XXRemakeRemake
             return vel;
         }
 
-	    public static void Gravity(Vector2 pos, Vector2 vel, Vector2 accel, float maxVel, GameTime gt)
+	    public static float Gravity(Vector2 pos, Vector2 vel, Vector2 accel, float maxVel, GameTime gt)
         {
             accel.Y += 9.8f;
 	        vel.Y = CalcVel(vel.Y, accel.Y, maxVel, gt);
-	        pos.Y += vel.Y;
+	        return vel.Y;
         }
 
 	    /* addToCollisions() and collisions() work together.

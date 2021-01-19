@@ -9,6 +9,11 @@ using Microsoft.Xna.Framework.Input;
  * - how do projectile rendering???
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
+ * - Make side B fly across the screen
+ * - Fix: Player falls to different height every time after jumping
+ * . Make Up B launch properly
+ * . Gravity/jumping
+ * . Implement states properly
  */
 
 

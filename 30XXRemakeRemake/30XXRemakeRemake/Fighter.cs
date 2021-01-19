@@ -16,19 +16,21 @@ namespace _30XXRemakeRemake
 		///A class for each species of fighters.
 		///</summary>
 
-		public bool charging = false; //Whether the fighter is charging an attack (e.g. Aura Sphere on Lucario)
-		public bool onCooldown = false; //Whether the fighter is on cooldown. If true, the fighter can't use any move.
-		protected float cdLength; //How long the fighter is on cooldown for. Measured in milliseconds.
+		internal enum FighterStates
+		{
+			Normal, // Default
+			Helpless, //Whether the fighter is in helpless. This is slightly different than onCooldown because a helpless fighter can't do anything but move.
+			Paused //Pauses the fighter (i.e. can't do anything at all), usually is used as part of a stationary move like Whirlpool on Omastar.
+		}
+
+		protected float cdTimer; //How long the fighter is on cooldown for. Measured in milliseconds.
 		protected double jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
-		protected bool isJumping = false; //Simply, whether the fighter is jumping.
 		protected float speed = 0; // The fighter's own moving speed.
-		protected bool helpless = false; //Whether the fighter is in helpless. This is slightly different than onCooldown because a helpless fighter can't do anything but move.
 
 		public int percent = 0; //The percentage the fighter is at. The higher means the more injured they are.
-		public bool paused = false; //Pauses the fighter (i.e. can't do anything at all), usually is used as part of a stationary move like Whirlpool on Omastar.
 
 		protected Vector2 vel = new Vector2(0, 0);
-		protected Vector2 accel = new Vector2(1, 0.25f);
+		protected Vector2 accel = new Vector2(1, 3);
 		//The Y parameter of maxVel is basically max jump height here, combined with accel.Y.
 		protected Vector2 maxVel = new Vector2(3, 7);
 
@@ -41,6 +43,9 @@ namespace _30XXRemakeRemake
 		public bool isColliding = false;
 		//onGround is a special isColliding to see if this fighter's bottom is colliding with a ground.
 		private bool onGround = false; //In Flixel, there was some weird ass bitwise operation magic here. Let's learn about that more before copying.
+
+		internal bool isJumping = false; //Simply, whether the fighter is jumping.
+		internal FighterStates state = FighterStates.Normal;
 
 		KeyboardState prevKBS;
 		KeyboardState currKBS;
@@ -121,15 +126,17 @@ namespace _30XXRemakeRemake
 				vel.X = 0;
 			}
 
-			if (currKBS.IsKeyDown(Keys.Up))
+			if (state != FighterStates.Normal)
+				return;
+
+			if (currKBS.IsKeyDown(Keys.X))
 			{
 				//this is a really shitty jump, fix plz
 
-					//position.Y -= Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed * 3;
-				if (!isJumping && jumpCount > 0 && prevKBS.IsKeyUp(Keys.Up))
+				if (jumpCount > 0 && prevKBS.IsKeyUp(Keys.X))
 				{
-					//position.Y = vel.Y * (float)gt.ElapsedGameTime.TotalSeconds;
-					Jump(gt);
+					isJumping = true;
+					vel.Y = -10f; // Todo: Unhardcode
 					jumpCount--;
 				}
 			}
@@ -145,10 +152,10 @@ namespace _30XXRemakeRemake
 		//A function for all the attacks
 		private void Attack(GameTime gt)
 		{
-			if (paused || onCooldown)
+			if (state != FighterStates.Normal || cdTimer > 0)
 				return;
 			
-			if (currKBS.IsKeyDown(Keys.Z))
+			if (!prevKBS.IsKeyDown(Keys.Z) && currKBS.IsKeyDown(Keys.Z))
 			{
 				//if ((!prevKBS.IsKeyDown(Keys.Left) && !prevKBS.IsKeyDown(Keys.Right)) && )
 				if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
@@ -170,37 +177,11 @@ namespace _30XXRemakeRemake
 
 			}
 		}
-		
-		//A function for jumping. TODO: Implement multi jumps.
-		private void Jump(GameTime gt)
-		{
-			isJumping = true;
-			vel.Y = Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * -speed * 5;
-		}
 
 		//How long the fighter goes on cooldown for. Calculated in milliseconds.
 		protected void Cooldown(GameTime gt)
 		{
-			cdLength -= Math.Min((float) gt.ElapsedGameTime.TotalMilliseconds, cdLength);
-
-			if (cdLength == 0)
-			{
-				onCooldown = false;
-			}
-		}
-
-		//Change the paused status to the opposite. Just that simple.
-		protected void PauseUnpause(GameTime gt)
-		{
-			paused = !paused;
-		}
-
-		protected void CheckPause(Attack move)
-		{
-			while (!move.SpriteTexture.Finished)
-			{
-				paused = true;
-			}
+			cdTimer -= Math.Min((float) gt.ElapsedGameTime.TotalMilliseconds, cdTimer);
 		}
 
 		protected abstract void NeutralB();
@@ -210,29 +191,38 @@ namespace _30XXRemakeRemake
 
 		public void Update(GameTime gt)
 		{
+
 			//if this fighter isn't colliding with the stage, then gravity does its thing
 			if (!hitbox.Intersects(Physics.StageHitbox))
 			{
-				Physics.Gravity(position, vel, accel, maxVel.Y, gt);
-				//Physics.Gravity(this, gt);
-				isJumping = false;
+				//vel.Y += Physics.Gravity(position, vel, accel, maxVel.Y, gt);
+				vel.Y += 1f; // Todo: Remove hardcode
 			}
 			else
 			{
+				isJumping = false;
 				jumpCount = 2;
+				vel.Y = 0;
+
+				if (state == FighterStates.Helpless)
+				{
+					state = FighterStates.Normal;
+				}
 			}
 
-			if (!paused)
+			if (state != FighterStates.Paused)
 			{
 				Movement(gt);
 			}
+
+			Attack(gt);
+
+			position.Y += vel.Y;
 			
 			hitbox.X = (int)position.X;
 			hitbox.Y = (int)position.Y;
 
-			Attack(gt);
-
-			if (onCooldown)
+			if (cdTimer > 0)
 			{
 				Cooldown(gt);
 			}

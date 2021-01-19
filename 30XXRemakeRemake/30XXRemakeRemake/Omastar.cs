@@ -41,9 +41,7 @@ namespace _30XXRemakeRemake
 	    protected override void NeutralB()
         {
             //Rock Blast: Projectile
-            cdLength = 500;
-
-	        onCooldown = true;
+            cdTimer = 500;
 
 			ProjectileAttack nb;
 
@@ -65,10 +63,9 @@ namespace _30XXRemakeRemake
 
 	    protected override void SideB()
         {
-            cdLength = 200;
+            cdTimer = 200;
 
-	        onCooldown = true;
-	        paused = true;
+            state = FighterStates.Paused;
 
 	        MeleeAttack sb;
 
@@ -89,9 +86,11 @@ namespace _30XXRemakeRemake
 
 	    protected override void UpB()
 	    {
-		    cdLength = 100;
+		    cdTimer = 100;
 
 		    MeleeAttack ub;
+
+		    state = FighterStates.Helpless;
 
 		    if (facing == "Left")
 		    {
@@ -106,14 +105,14 @@ namespace _30XXRemakeRemake
 
 		    Physics.AddToUpdateList(ub);
 
-			vel = new Vector2(0, -1f);
+			vel.Y = -15;
 		}
 
 	    protected override void DownB()
 	    {
-		    cdLength = 700;
+		    cdTimer = 700;
 
-		    this.paused = true;
+		    state = FighterStates.Paused;
 
 			MeleeAttack db = new MeleeAttack("Right", _charTextures[4], new Rectangle((int)Position.X - 35, (int)Position.Y + 34, 120, 10), new Rectangle((int)Position.X - 35, (int)Position.Y, 120, 10), 13, "V", this, 30, 10, Math.PI/6, true);
 

@@ -15,13 +15,13 @@ namespace _30XXRemakeRemake
 			//not much I guess
         }
 
-		public void Update(GameTime gt)
+		public override void Update(GameTime gt)
 		{
 			spriteTexture.SourceRect = new Rectangle(Point.Zero, new Point(3, 0));
 			//update with kb logic	
 			if (spriteTexture.Finished)
 			{
-				user.paused = false;
+				//user.paused = false;
 			}
 		}
 	}
