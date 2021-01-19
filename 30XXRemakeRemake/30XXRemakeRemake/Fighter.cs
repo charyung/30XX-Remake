@@ -50,9 +50,6 @@ namespace _30XXRemakeRemake
 		KeyboardState prevKBS;
 		KeyboardState currKBS;
 
-		//public List<animation> animations = new List<animation>();
-		protected List<Attack> moves = new List<Attack>();
-
 		///<summary>
 		///Constructor for the Fighter class.
 		///</summary>
@@ -145,8 +142,6 @@ namespace _30XXRemakeRemake
 				//Some fastfalling stuff, but let's deal with this later.
 				//position.Y += Physics.CalcVel(vel.Y, accel.Y, maxVel.Y, gt) * speed;
 			}
-
-			//position.Y += accel.Y;
 		}
 
 		//A function for all the attacks
@@ -157,7 +152,6 @@ namespace _30XXRemakeRemake
 			
 			if (!prevKBS.IsKeyDown(Keys.Z) && currKBS.IsKeyDown(Keys.Z))
 			{
-				//if ((!prevKBS.IsKeyDown(Keys.Left) && !prevKBS.IsKeyDown(Keys.Right)) && )
 				if (currKBS.IsKeyDown(Keys.Left) || currKBS.IsKeyDown(Keys.Right))
 				{
 					SideB();
