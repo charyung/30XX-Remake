@@ -25,21 +25,24 @@ namespace _30XXRemakeRemake
         ///<param name="numberOfFrames"> The number of frames the whole animation has. </param>
         ///<param name="nextFrame"> Whether the next frame is right of or below the current sprite frame on the spritesheet. Can be either "V" for vertical or "H" for horizontal. </param>
         ///<param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
-        ///<param name="_currentFrame"> The index of the frame for the animation to start on. </param>
+        ///<param name="currentFrame"> The index of the frame for the animation to start on. </param>
         ///<param name="loop"> Indicates whether the animation loops or just plays once. </param>
-        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, bool loop = false, float interval = 55f, int _currentFrame = 0)
+        public Animation(Texture2D texture, Rectangle sprite, int numberOfFrames, string nextFrame, bool loop = false, float interval = 55f, int currentFrame = 0)
         {
 
             this.SpriteTexture = texture;
-            this.sWidth = sprite.Width;
-            this.sHeight = sprite.Height;
+            (int x, int y, int width, int height) = sprite;
+            sX = x;
+            sY = y;
+            this.sWidth = width;
+            this.sHeight = height;
             this.numberOfFrames = numberOfFrames;
             this.nextFrame = nextFrame;
             this.interval = interval;
-            this._currentFrame = _currentFrame;
+            this._currentFrame = currentFrame;
             this.loop = loop;
 
-            this.SourceRect = new Rectangle(0, 0, sWidth, sHeight);
+            sourceRect = new Rectangle(x, y, sWidth, sHeight);
             //origin = new Vector2(sourceRect.Width / 2, sourceRect.Height / 2);
         }
 	    //Vector2 origin; //the fuck is this for??
@@ -115,5 +118,12 @@ namespace _30XXRemakeRemake
 			sourceRect.Width += width;
 			sourceRect.Height += height;
 		}
+
+	    internal void Reset()
+	    {
+		    _currentFrame = 0;
+		    timer = 0f;
+		    Finished = false;
+	    }
     }
 }

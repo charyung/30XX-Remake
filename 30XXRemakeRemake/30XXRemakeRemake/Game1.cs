@@ -9,9 +9,11 @@ using Microsoft.Xna.Framework.Input;
  * - how do projectile rendering???
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
- * . Make side B fly across the screen
  * - Fix: Player falls to different height every time after jumping
- * . Fix: Add unpause after melee attack finishes
+ * - Differ jump height between characters
+ * . Speed up walking acceleration
+ * - Implement Ampharos
+ * - Use currAnimation in Omastar
  */
 
 
@@ -58,7 +60,7 @@ namespace _30XXRemakeRemake
         //Texture2D whirlpool;
         Fighter omastar;
         Stage tt;
-        Animation a;
+        //Animation a;
         Vector2 b = new Vector2(10, 100);
         
 
@@ -72,13 +74,13 @@ namespace _30XXRemakeRemake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
+            //a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
             Physics.StageHitbox = tt.hbRect;
 
-            omastar = new Omastar(new Vector2(200, 100), Content);
+            omastar = new Ampharos(new Vector2(200, 100), Content);
             Physics.AddToCollisions(omastar, omastar.hitbox);
         }
 
@@ -105,7 +107,7 @@ namespace _30XXRemakeRemake
             //omastar.Movement(gameTime);
             omastar.Update(gameTime);
             //whirlpool.Animate(gameTime);
-            a.Animate(gameTime);
+            //a.Animate(gameTime);
             b.X += (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
             //Drawer.m += gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -128,7 +130,7 @@ namespace _30XXRemakeRemake
             spriteBatch.Draw(tt.Img, new Vector2(0, 0), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
             //spriteBatch.Draw(Content.Load<Texture2D>(whirlpool.SpriteTexture), new Vector2(10, 10), whirlpool.SourceRect, Color.White);
 
-            spriteBatch.Draw(a.SpriteTexture, b, a.SourceRect, Color.White);
+            //spriteBatch.Draw(a.SpriteTexture, b, a.SourceRect, Color.White);
 
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
