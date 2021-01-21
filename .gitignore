@@ -1,4 +1,5 @@
 30XXRemakeRemake/.vs
 30XXRemakeRemake/30XXRemakeRemake.sln
 30XXRemakeRemake/30XXRemakeRemake/*
+!30XXRemakeRemake/30XXRemakeRemake/Src
 !30XXRemakeRemake/30XXRemakeRemake/*.cs

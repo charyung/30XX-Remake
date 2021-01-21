@@ -11,7 +11,6 @@ using Microsoft.Xna.Framework.Input;
  *  - Apparently that's a bad idea though?? hmm
  * - Fix: Player falls to different height every time after jumping
  * - Differ jump height between characters
- * . Speed up walking acceleration
  * - Implement Ampharos
  * - Use currAnimation in Omastar
  */
@@ -80,7 +79,7 @@ namespace _30XXRemakeRemake
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
             Physics.StageHitbox = tt.hbRect;
 
-            omastar = new Ampharos(new Vector2(200, 100), Content);
+            omastar = new Omastar(new Vector2(200, 100), Content);
             Physics.AddToCollisions(omastar, omastar.hitbox);
         }
 
