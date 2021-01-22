@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace _30XXRemakeRemake
@@ -73,7 +74,26 @@ namespace _30XXRemakeRemake
 	    public void Animate(GameTime gt)
         {
             //Redefine the source rectangle such that it takes the correct part of the spritesheet for the current frame.
-			 sourceRect = (nextFrame == "V") ? new Rectangle(sX, _currentFrame * sHeight, sWidth, sHeight) : new Rectangle(_currentFrame * sWidth, sY, sWidth, sHeight);
+            int x;
+            int y;
+
+            int rem;
+            if (nextFrame == "V")
+            {
+	            int rowNum = SpriteTexture.Height / sHeight;
+	            x = Math.DivRem(_currentFrame, rowNum, out rem) * sHeight;
+	            y = rem * sHeight;
+            }
+            else
+            {
+	            int colNum = SpriteTexture.Width / sWidth;
+	            y = Math.DivRem(_currentFrame, colNum, out rem) * sWidth;
+	            x = rem * sWidth;
+            }
+
+            x += sX;
+            y += sY;
+            sourceRect = new Rectangle(x, y, sWidth, sHeight);
             
             timer += (float)gt.ElapsedGameTime.TotalMilliseconds;
 

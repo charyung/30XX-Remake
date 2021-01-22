@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
  * - Differ jump height between characters
  * - Implement Ampharos
  * - Use currAnimation in Omastar
+ * - Update gitignore
  */
 
 
@@ -79,7 +80,7 @@ namespace _30XXRemakeRemake
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
             Physics.StageHitbox = tt.hbRect;
 
-            omastar = new Omastar(new Vector2(200, 100), Content);
+            omastar = new Ampharos(new Vector2(200, 100), Content);
             Physics.AddToCollisions(omastar, omastar.hitbox);
         }
 

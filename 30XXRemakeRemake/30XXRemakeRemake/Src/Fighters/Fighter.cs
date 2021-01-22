@@ -218,7 +218,7 @@ namespace _30XXRemakeRemake
 		public virtual void Update(GameTime gt)
 		{
 			//if this fighter isn't colliding with the stage, then gravity does its thing
-			if (!hitbox.Intersects(Physics.StageHitbox))
+			if (!hitbox.Intersects(Physics.StageHitbox) && state != FighterStates.Paused)
 			{
 				//vel.Y += Physics.Gravity(position, vel, accel, maxVel.Y, gt);
 				vel.Y += 1f; // Todo: Remove hardcode
