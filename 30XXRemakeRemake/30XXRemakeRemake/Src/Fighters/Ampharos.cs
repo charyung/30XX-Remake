@@ -96,6 +96,7 @@ namespace _30XXRemakeRemake
 			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.UpSp], atkPosition, atkHitbox, 10, "H", this, 30, 20, 0, true);
 
 			activeAttacks.Add((ActionTypes.UpSp, nb));
+			state = FighterStates.Helpless;
 			currAnimation = _charTextures[ActionTypes.UpSp];
 
 			vel.Y = -10;

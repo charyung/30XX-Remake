@@ -219,29 +219,33 @@ namespace _30XXRemakeRemake
 
 		public virtual void Update(GameTime gt)
 		{
-			//if this fighter isn't colliding with the stage, then gravity does its thing
-			if (!hitbox.Intersects(Physics.StageHitbox))
+			if (state == FighterStates.Paused)
 			{
-				//vel.Y += Physics.Gravity(position, vel, accel, maxVel.Y, gt);
-				// This is a separate if statement because we want the !intersects if statement to trigger even if the fighter is paused
-				if (state != FighterStates.Paused)
-				{
-					vel.Y += 1f; // Todo: Remove hardcode
-				}
+				vel.Y = 0;
 			}
 			else
 			{
-				isJumping = false;
-				jumpCount = 2;
-				vel.Y = 0;
-				// Prevent the player from falling into the ground. The -1 makes sure that the player doesn't keep hovering just above the ground, causing them to vibrate up and down
-				position.Y -= (position.Y + hitbox.Height - Physics.StageHitbox.Y - 1);
-
-				if (state == FighterStates.Helpless)
+				//if this fighter isn't colliding with the stage, then gravity does its thing
+				if (!hitbox.Intersects(Physics.StageHitbox))
 				{
-					state = FighterStates.Normal;
+					//vel.Y += Physics.Gravity(position, vel, accel, maxVel.Y, gt);
+					vel.Y += 1f; // Todo: Remove hardcode
+				}
+				else
+				{
+					isJumping = false;
+					jumpCount = 2;
+					vel.Y = 0;
+					// Prevent the player from falling into the ground. The -1 makes sure that the player doesn't keep hovering just above the ground, causing them to vibrate up and down
+					position.Y -= (position.Y + hitbox.Height - Physics.StageHitbox.Y - 1);
+
+					if (state == FighterStates.Helpless)
+					{
+						state = FighterStates.Normal;
+					}
 				}
 			}
+			
 
 			if (state != FighterStates.Paused)
 			{

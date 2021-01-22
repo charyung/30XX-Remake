@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Input;
  * - Update gitignore
  * - Improve animations
  *  - Allow for pausing fighter at different times
+ *  - Delayed animation
  */
 
 
