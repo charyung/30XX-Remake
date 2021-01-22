@@ -35,7 +35,8 @@ namespace _30XXRemakeRemake
 		}
 
 		protected float cdTimer; //How long the fighter is on cooldown for. Measured in milliseconds.
-		protected double jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
+		protected int jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
+		protected float jumpHeight;
 		protected float speed = 0; // The fighter's own moving speed.
 
 		public int percent = 0; //The percentage the fighter is at. The higher means the more injured they are.
@@ -71,11 +72,12 @@ namespace _30XXRemakeRemake
 		///<param name="sWidth"> The width of this fighter's sprite. </param>
 		///<param name="sHeight"> The height of thie fighter's sprite. </param>
 		///<param name="speed"> The speed of this fighter. </param>
-		protected Fighter(Vector2 position, int sWidth, int sHeight, float speed)
+		protected Fighter(Vector2 position, int sWidth, int sHeight, float speed, float jumpHeight)
 		{
 
 			this.position = position;
 			this.speed = speed;
+			this.jumpHeight = jumpHeight;
 
 			hitbox = new Rectangle((int)position.X, (int)position.Y, sWidth, sHeight);
 		}
@@ -149,7 +151,7 @@ namespace _30XXRemakeRemake
 				if (jumpCount > 0 && prevKBS.IsKeyUp(Keys.X))
 				{
 					isJumping = true;
-					vel.Y = -10f; // Todo: Unhardcode
+					vel.Y = jumpHeight;
 					jumpCount--;
 				}
 			}
@@ -218,16 +220,22 @@ namespace _30XXRemakeRemake
 		public virtual void Update(GameTime gt)
 		{
 			//if this fighter isn't colliding with the stage, then gravity does its thing
-			if (!hitbox.Intersects(Physics.StageHitbox) && state != FighterStates.Paused)
+			if (!hitbox.Intersects(Physics.StageHitbox))
 			{
 				//vel.Y += Physics.Gravity(position, vel, accel, maxVel.Y, gt);
-				vel.Y += 1f; // Todo: Remove hardcode
+				// This is a separate if statement because we want the !intersects if statement to trigger even if the fighter is paused
+				if (state != FighterStates.Paused)
+				{
+					vel.Y += 1f; // Todo: Remove hardcode
+				}
 			}
 			else
 			{
 				isJumping = false;
 				jumpCount = 2;
 				vel.Y = 0;
+				// Prevent the player from falling into the ground. The -1 makes sure that the player doesn't keep hovering just above the ground, causing them to vibrate up and down
+				position.Y -= (position.Y + hitbox.Height - Physics.StageHitbox.Y - 1);
 
 				if (state == FighterStates.Helpless)
 				{

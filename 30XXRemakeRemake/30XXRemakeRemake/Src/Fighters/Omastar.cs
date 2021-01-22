@@ -10,7 +10,7 @@ namespace _30XXRemakeRemake
     {
 	    private readonly List<Texture2D> _charTextures = new List<Texture2D>();
 
-	    public Omastar(Vector2 position, ContentManager Content) : base(position, 51, 44, 1)
+	    public Omastar(Vector2 position, ContentManager Content) : base(position, 51, 44, 1, -13)
         {
             LoadTextures(Content);
 

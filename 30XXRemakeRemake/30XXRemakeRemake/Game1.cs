@@ -9,11 +9,12 @@ using Microsoft.Xna.Framework.Input;
  * - how do projectile rendering???
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
- * - Fix: Player falls to different height every time after jumping
- * - Differ jump height between characters
- * - Implement Ampharos
+ * . Fix: Player falls to different height every time after jumping
+ * . Differ jump height between characters
  * - Use currAnimation in Omastar
  * - Update gitignore
+ * - Improve animations
+ *  - Allow for pausing fighter at different times
  */
 
 
