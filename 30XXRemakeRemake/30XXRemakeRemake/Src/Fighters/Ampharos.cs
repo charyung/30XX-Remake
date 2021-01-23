@@ -11,7 +11,7 @@ namespace _30XXRemakeRemake
 		private readonly Dictionary<ActionTypes, Animation> _charTextures = new Dictionary<ActionTypes, Animation>(); // The textures that the character uses while taking each action, such as a punching motion
 		private readonly Dictionary<ActionTypes, Texture2D> _attackTextures = new Dictionary<ActionTypes, Texture2D>(); // The textures that attack uses, such as electric bubbles
 
-		public Ampharos(bool isPlayer, Vector2 position, ContentManager Content) : base(isPlayer, position, 51, 44, 1, -10)
+		public Ampharos(bool isPlayer, Vector2 position, ContentManager Content) : base(isPlayer, position, 51, 44, 4, 2, -10, 2)
 		{
 			LoadTextures(Content);
 

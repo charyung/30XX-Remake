@@ -17,11 +17,10 @@ using Microsoft.Xna.Framework.Input;
  *  - Delayed animation
  *  - Moving hitbox
  * - Attacks
- *  . Knockback
- *  . Knockback angle
  *  - Damage %
  * - Unify all the physics calculations
  * - Improve physics calculations
+ * - Unify variable naming scheme
  */
 
 

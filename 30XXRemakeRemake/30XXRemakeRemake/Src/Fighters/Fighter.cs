@@ -35,17 +35,18 @@ namespace _30XXRemakeRemake
 		}
 
 		protected float cdTimer; //How long the fighter is on cooldown for. Measured in milliseconds.
-		protected int jumpCount = 2; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
+		protected int jumpCount; //Amount of jumps the fighter has. 2 for most but will probably have more for species like birb mons.
+		protected int remainingJumps; // Amount of jumps the fighter has left currently
 		protected float jumpHeight;
-		protected float speed = 0; // The fighter's own moving speed.
+		protected float speed; // The fighter's own moving speed.
 
 		public int percent = 0; //The percentage the fighter is at. The higher means the more injured they are.
 
 		protected Vector2 vel = new Vector2(0, 0);
 		protected Vector2 accel = new Vector2(0, 3);
 		//The Y parameter of maxVel is basically max jump height here, combined with accel.Y.
-		protected Vector2 maxVel = new Vector2(5, 7);
-		protected float airResist = 1; // Air resistance
+		protected Vector2 maxVel;
+		protected float AirRes; // Air resistance
 
 		protected Vector2 position;
 		protected Animation idle;
@@ -76,13 +77,17 @@ namespace _30XXRemakeRemake
 		///<param name="sWidth"> The width of this fighter's sprite. </param>
 		///<param name="sHeight"> The height of thie fighter's sprite. </param>
 		///<param name="speed"> The speed of this fighter. </param>
-		protected Fighter(bool isPlayer, Vector2 position, int sWidth, int sHeight, float speed, float jumpHeight)
+		///<param name="jumpHeight"></param>
+		protected Fighter(bool isPlayer, Vector2 position, int sWidth, int sHeight, float speed, int jumpCount, float jumpHeight, float airRes)
 		{
 
 			this.position = position;
 			this.speed = speed;
+			this.jumpCount = jumpCount;
+			this.remainingJumps = jumpCount;
 			this.jumpHeight = jumpHeight;
 			this.isPlayer = isPlayer;
+			AirRes = airRes;
 
 			hitbox = new Rectangle((int)position.X, (int)position.Y, sWidth, sHeight);
 		}
@@ -112,11 +117,6 @@ namespace _30XXRemakeRemake
 			get { return facingVisual; }
 		}
 
-		public Texture2D SpriteTexture
-		{
-			get { return idle.SpriteTexture; }
-		}
-
 		public void Movement(GameTime gt)
 		{
 			if (!isPlayer) return;
@@ -126,7 +126,7 @@ namespace _30XXRemakeRemake
 
 			if (currKBS.IsKeyDown(Keys.Left))
 			{
-				accel.X = -4;
+				accel.X = -speed;
 				currAnimation = walking;
 				facing = "Left";
 				facingVisual = SpriteEffects.FlipHorizontally;
@@ -134,7 +134,7 @@ namespace _30XXRemakeRemake
 			}
 			else if (currKBS.IsKeyDown(Keys.Right))
 			{
-				accel.X = 4;
+				accel.X = speed;
 				currAnimation = walking;
 				facing = "Right";
 				facingVisual = SpriteEffects.None;
@@ -153,11 +153,11 @@ namespace _30XXRemakeRemake
 			{
 				//this is a really shitty jump, fix plz
 
-				if (jumpCount > 0 && prevKBS.IsKeyUp(Keys.X))
+				if (remainingJumps > 0 && prevKBS.IsKeyUp(Keys.X))
 				{
 					isJumping = true;
 					vel.Y = jumpHeight;
-					jumpCount--;
+					remainingJumps--;
 				}
 			}
 			else if (currKBS.IsKeyDown(Keys.Down))
@@ -259,7 +259,7 @@ namespace _30XXRemakeRemake
 			}
 
 			currAnimation?.Animate(gameTime);
-			spriteBatch.Draw(SpriteTexture, Position, currAnimation?.SourceRect ?? idle.SourceRect, Color.White, 0f, Vector2.Zero, 1, Facing, 0);
+			spriteBatch.Draw(currAnimation?.SpriteTexture ?? idle.SpriteTexture, Position, currAnimation?.SourceRect ?? idle.SourceRect, Color.White, 0f, Vector2.Zero, 1, Facing, 0);
 		}
 
 		public virtual void Update(GameTime gt)
@@ -279,7 +279,7 @@ namespace _30XXRemakeRemake
 				else
 				{
 					isJumping = false;
-					jumpCount = 2;
+					remainingJumps = jumpCount;
 					vel.Y = Math.Min(vel.Y, 0);
 					// Prevent the player from falling into the ground. The -1 makes sure that the player doesn't keep hovering just above the ground, causing them to vibrate up and down
 					position.Y -= (position.Y + hitbox.Height - Physics.StageHitbox.Y - 1);
@@ -294,7 +294,7 @@ namespace _30XXRemakeRemake
 
 				Attack(gt);
 
-				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, airResist, gt);
+				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, AirRes, gt);
 
 				position.X += (int)vel.X;
 				position.Y += (int)vel.Y;
