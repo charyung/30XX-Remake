@@ -22,9 +22,16 @@ namespace _30XXRemakeRemake
 
         public override void Update(GameTime gt)
         {
-            _vel.X = Physics.CalcVel(_vel.X, _accel.X, 10, 1, gt);
+            _vel.X = Physics.CalcVel(_vel.X, _accel.X, 10, 0, gt);
             position.X += (int)_vel.X;
 			hitbox.X += (int)_vel.X;
+
+			HashSet<Fighter> fightersWithoutUser = new HashSet<Fighter>(Physics.Fighters);
+			fightersWithoutUser.Remove(user);
+			foreach (Fighter fighter in fightersWithoutUser.Where(fighter => hitbox.Intersects(fighter.hitbox)))
+			{
+				fighter.TakeKnockback(kbAngle, kb);
+			}
         }
     }
 }

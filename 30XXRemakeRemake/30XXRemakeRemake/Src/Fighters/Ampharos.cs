@@ -11,7 +11,7 @@ namespace _30XXRemakeRemake
 		private readonly Dictionary<ActionTypes, Animation> _charTextures = new Dictionary<ActionTypes, Animation>(); // The textures that the character uses while taking each action, such as a punching motion
 		private readonly Dictionary<ActionTypes, Texture2D> _attackTextures = new Dictionary<ActionTypes, Texture2D>(); // The textures that attack uses, such as electric bubbles
 
-		public Ampharos(bool isPlayer, Vector2 position, ContentManager Content) : base(isPlayer, position, 51, 44, 4, 2, -10, 2)
+		public Ampharos(bool isPlayer, Vector2 position, ContentManager Content) : base(isPlayer, position, 60, 61, 4, 2, -10, 2)
 		{
 			LoadTextures(Content);
 
@@ -53,7 +53,7 @@ namespace _30XXRemakeRemake
 			Rectangle atkHitbox = atkPosition;
 			double kbAngle = facing == "Left" ? 5 * Math.PI / 6 : Math.PI / 6;
 
-			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.NeutralSp], atkPosition, atkHitbox, 2, "H", this, 30, 4, kbAngle, true, 300f);
+			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.NeutralSp], atkPosition, atkHitbox, 2, "H", this, 30, 5, kbAngle, true, 300f);
 
 			activeAttacks.Add((ActionTypes.NeutralSp, nb));
 
@@ -72,8 +72,9 @@ namespace _30XXRemakeRemake
 			int positionY = (int) Position.Y + 20;
 			Rectangle atkPosition = new Rectangle(positionX, positionY, 65, 14);
 			Rectangle atkHitbox = atkPosition;
+			double kbAngle = facing == "Left" ? Math.PI : 0;
 
-			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.SideSp], atkPosition, atkHitbox, 8, "V", this, 30, 20, 0, true);
+			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.SideSp], atkPosition, atkHitbox, 8, "V", this, 30, 5, kbAngle, true);
 
 			activeAttacks.Add((ActionTypes.SideSp, nb));
 
@@ -92,7 +93,7 @@ namespace _30XXRemakeRemake
 			Rectangle atkPosition = new Rectangle(positionX, positionY, 50, 60);
 			Rectangle atkHitbox = atkPosition;
 
-			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.UpSp], atkPosition, atkHitbox, 10, "H", this, 30, 20, 0, true);
+			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.UpSp], atkPosition, atkHitbox, 10, "H", this, 30, 0, 0, true);
 
 			activeAttacks.Add((ActionTypes.UpSp, nb));
 			state = FighterStates.Helpless;
@@ -111,8 +112,9 @@ namespace _30XXRemakeRemake
 			int positionY = (int)Position.Y;
 			Rectangle atkPosition = new Rectangle(positionX, positionY, 100, 20);
 			Rectangle atkHitbox = atkPosition;
+			double kbAngle = facing == "Left" ? Math.PI : 0;
 
-			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.DownSp], atkPosition, atkHitbox, 5, "V", this, 30, 20, 0, true);
+			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.DownSp], atkPosition, atkHitbox, 5, "V", this, 30, 5, kbAngle, true);
 
 			activeAttacks.Add((ActionTypes.DownSp, nb));
 

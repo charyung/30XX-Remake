@@ -45,18 +45,17 @@ namespace _30XXRemakeRemake
             //Rock Blast: Projectile
             cdTimer = 500;
 
-			ProjectileAttack nb;
+            int velX = facing == "Left" ? -1 : 1;
+			float accelX = facing == "Left" ? -0.01f : 0.01f;
+			int positionX = (int)Position.X + (facing == "Left" ? -25 : 46);
+			int positionY = (int)Position.Y + 20;
+			Rectangle atkPosition = new Rectangle(positionX, positionY, 30, 30);
+			Rectangle atkHitbox = atkPosition;
+			double kbAngle = facing == "Left" ? 5 * Math.PI / 6 : Math.PI / 6;
 
-            //Here we spawn the attack according to the direction that the Omastar was facing when he used the attack.
-            //The spritebatch draws are different because the left facing sprite has to be flipped first.
-            if (facing == "Left")
-            {
-                nb = new ProjectileAttack(new Vector2(-1, 0), new Vector2(-0.01f, 0), "Left", _charTextures[1], new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X - 25, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI - Math.PI / 6, true);
-            }
-            else
-            {
-                nb = new ProjectileAttack(new Vector2(1, 0), new Vector2(0.01f, 0), "Right", _charTextures[1], new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), new Rectangle((int)Position.X + 46, (int)Position.Y + 14, 30, 30), 6, "H", this, 20, 10, Math.PI / 6, true);
-            }
+			//Here we spawn the attack according to the direction that the Omastar was facing when he used the attack.
+			//The spritebatch draws are different because the left facing sprite has to be flipped first.
+            ProjectileAttack nb = new ProjectileAttack(new Vector2(velX, 0), new Vector2(accelX, 0), "Left", _charTextures[1], atkPosition, atkHitbox, 6, "H", this, 20, 5, kbAngle, true);
 
 			activeAttacks.Add((ActionTypes.NeutralSp, nb));
 		}
@@ -67,18 +66,15 @@ namespace _30XXRemakeRemake
 
             state = FighterStates.Paused;
 
-	        MeleeAttack sb;
+            string direction = facing;
+	        int positionX = (int)Position.X + (facing == "Left" ? -46 : 36);
+	        int positionY = (int)Position.Y + 35;
+	        Rectangle atkPosition = new Rectangle(positionX, positionY, 60, 5);
+	        Rectangle atkHitbox = atkPosition;
+	        double kbAngle = facing == "Left" ? 5 * Math.PI / 6 : Math.PI / 6;
 
 			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
-			if (facing == "Left")
-            {
-				sb = new MeleeAttack("Left", _charTextures[2], new Rectangle((int)Position.X - 46, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 14, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
-            }
-			else
-			{
-				sb = new MeleeAttack("Right", _charTextures[2], new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 60, 5), new Rectangle((int)Position.X + 36, (int)Position.Y + 35, 10, 5), 6, "V", this, 20, 10, Math.PI / 6, true);
-			}
-
+			MeleeAttack sb = new MeleeAttack(direction, _charTextures[2], atkPosition, atkHitbox, 6, "V", this, 20, 5, kbAngle, true);
 			activeAttacks.Add((ActionTypes.SideSp, sb));
 		}
 
@@ -86,18 +82,16 @@ namespace _30XXRemakeRemake
 	    {
 		    cdTimer = 100;
 
-		    MeleeAttack ub;
-
 		    state = FighterStates.Helpless;
 
-		    if (facing == "Left")
-		    {
-			    ub = new MeleeAttack("Left", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
-			}
-		    else
-		    {
-				ub = new MeleeAttack("Right", _charTextures[3], new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), new Rectangle((int)Position.X + 10, (int)Position.Y - 8, 30, 60), 12, "H", this, 5, 70, 180, false);
-			}
+		    string direction = facing;
+		    int positionX = (int)Position.X + 10;
+		    int positionY = (int)Position.Y - 8;
+		    Rectangle atkPosition = new Rectangle(positionX, positionY, 30, 60);
+		    Rectangle atkHitbox = atkPosition;
+		    double kbAngle = Math.PI / 2;
+
+			MeleeAttack ub = new MeleeAttack(direction, _charTextures[3], atkPosition, atkHitbox, 12, "H", this, 5, 7, kbAngle, false);
 
 		    activeAttacks.Add((ActionTypes.SideSp, ub));
 

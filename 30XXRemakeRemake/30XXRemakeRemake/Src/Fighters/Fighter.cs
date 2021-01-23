@@ -153,12 +153,10 @@ namespace _30XXRemakeRemake
 			{
 				//this is a really shitty jump, fix plz
 
-				if (remainingJumps > 0 && prevKBS.IsKeyUp(Keys.X))
-				{
-					isJumping = true;
-					vel.Y = jumpHeight;
-					remainingJumps--;
-				}
+				if (remainingJumps <= 0 || !prevKBS.IsKeyUp(Keys.X)) return;
+				isJumping = true;
+				vel.Y = jumpHeight;
+				remainingJumps--;
 			}
 			else if (currKBS.IsKeyDown(Keys.Down))
 			{
@@ -209,7 +207,7 @@ namespace _30XXRemakeRemake
 		}
 
 		/// <summary>
-		///		Set velocity according to the given knockback values
+		///		Set velocity according to the given knockback values.
 		/// </summary>
 		/// <param name="angle">Angle in radians. -pi &lt;= x &lt;= pi</param>
 		/// <param name="amount">The hypotenuse of the triangle</param>
@@ -218,7 +216,7 @@ namespace _30XXRemakeRemake
 			int xMod = 1;
 			int yMod = 1;
 
-			if (angle < Math.PI / 2)
+			if (angle < -Math.PI / 2)
 			{
 				// 3rd quadrant
 				xMod = -1;
@@ -242,8 +240,8 @@ namespace _30XXRemakeRemake
 				angle = Math.PI - angle;
 			}
 
-			vel.X = (float) (Math.Sin(angle) * amount * xMod);
-			vel.Y = (float) (Math.Cos(angle) * amount * yMod);
+			vel.X = (float) (Math.Cos(angle) * amount * xMod);
+			vel.Y = (float) (Math.Sin(angle) * amount * yMod);
 		}
 
 		protected abstract void NeutralB();
