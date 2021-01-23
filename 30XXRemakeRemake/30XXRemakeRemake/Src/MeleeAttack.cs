@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 
 namespace _30XXRemakeRemake
 {
@@ -18,7 +15,12 @@ namespace _30XXRemakeRemake
 		public override void Update(GameTime gt)
 		{
 			spriteTexture.SourceRect = new Rectangle(Point.Zero, new Point(3, 0));
-			//update with kb logic
+			HashSet<Fighter> fightersWithoutUser = new HashSet<Fighter>(Physics.Fighters);
+			fightersWithoutUser.Remove(user);
+			foreach (Fighter fighter in fightersWithoutUser.Where(fighter => hitbox.Intersects(fighter.hitbox)))
+			{
+				fighter.TakeKnockback(kbAngle, kb);
+			}
 		}
 
 		internal override void Cleanup()

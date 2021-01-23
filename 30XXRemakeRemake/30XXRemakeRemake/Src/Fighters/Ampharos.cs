@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +11,7 @@ namespace _30XXRemakeRemake
 		private readonly Dictionary<ActionTypes, Animation> _charTextures = new Dictionary<ActionTypes, Animation>(); // The textures that the character uses while taking each action, such as a punching motion
 		private readonly Dictionary<ActionTypes, Texture2D> _attackTextures = new Dictionary<ActionTypes, Texture2D>(); // The textures that attack uses, such as electric bubbles
 
-		public Ampharos(Vector2 position, ContentManager Content) : base(position, 51, 44, 1, -10)
+		public Ampharos(bool isPlayer, Vector2 position, ContentManager Content) : base(isPlayer, position, 51, 44, 1, -10)
 		{
 			LoadTextures(Content);
 
@@ -53,8 +51,9 @@ namespace _30XXRemakeRemake
 			int positionY = (int)Position.Y + 1;
 			Rectangle atkPosition = new Rectangle(positionX, positionY, 60, 36);
 			Rectangle atkHitbox = atkPosition;
+			double kbAngle = facing == "Left" ? 5 * Math.PI / 6 : Math.PI / 6;
 
-			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.NeutralSp], atkPosition, atkHitbox, 2, "H", this, 30, 20, 0, true, 300f);
+			MeleeAttack nb = new MeleeAttack(direction, _attackTextures[ActionTypes.NeutralSp], atkPosition, atkHitbox, 2, "H", this, 30, 4, kbAngle, true, 300f);
 
 			activeAttacks.Add((ActionTypes.NeutralSp, nb));
 
@@ -70,7 +69,7 @@ namespace _30XXRemakeRemake
 
 			string direction = facing;
 			int positionX = (int) Position.X + (facing == "Left" ? -65 : 65);
-			int positionY = (int)Position.Y + 20;
+			int positionY = (int) Position.Y + 20;
 			Rectangle atkPosition = new Rectangle(positionX, positionY, 65, 14);
 			Rectangle atkHitbox = atkPosition;
 

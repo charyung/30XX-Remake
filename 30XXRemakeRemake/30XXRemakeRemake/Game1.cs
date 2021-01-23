@@ -9,13 +9,19 @@ using Microsoft.Xna.Framework.Input;
  * - how do projectile rendering???
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
- * . Fix: Player falls to different height every time after jumping
- * . Differ jump height between characters
+ * - Fix player at wrong height on the ground
  * - Use currAnimation in Omastar
  * - Update gitignore
  * - Improve animations
  *  - Allow for pausing fighter at different times
  *  - Delayed animation
+ *  - Moving hitbox
+ * - Attacks
+ *  . Knockback
+ *  . Knockback angle
+ *  - Damage %
+ * - Unify all the physics calculations
+ * - Improve physics calculations
  */
 
 
@@ -58,9 +64,9 @@ namespace _30XXRemakeRemake
             base.Initialize();
         }
 
-        Animation whirlpool;
-        //Texture2D whirlpool;
-        Fighter omastar;
+        //private ProjectileAttack atk;
+        Fighter ftr;
+        private Fighter ftr2;
         Stage tt;
         //Animation a;
         Vector2 b = new Vector2(10, 100);
@@ -77,13 +83,17 @@ namespace _30XXRemakeRemake
 
             // TODO: use this.Content to load your game content here
             //a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
+            //Texture2D atkTexture = Content.Load<Texture2D>("Textures/rockBlast");
+            //atk = new ProjectileAttack(new Vector2(-1, 0), new Vector2(-0.01f, 0), "Left", atkTexture, new Rectangle((int)100, 150, 30, 30), new Rectangle(100, 150, 30, 30), 6, "H", ftr2, 20, 10, Math.PI - Math.PI / 6, true);
 
             //tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
             tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
             Physics.StageHitbox = tt.hbRect;
 
-            omastar = new Ampharos(new Vector2(200, 100), Content);
-            Physics.AddToCollisions(omastar, omastar.hitbox);
+            ftr = new Ampharos(true, new Vector2(200, 100), Content);
+            ftr2 = new Omastar(false, new Vector2(300, 100), Content);
+            Physics.AddToCollisions(ftr, ftr.hitbox);
+            Physics.AddToCollisions(ftr2, ftr2.hitbox);
         }
 
         /// <summary>
@@ -106,9 +116,8 @@ namespace _30XXRemakeRemake
                 Exit();
 
             // TODO: Add your update logic here
-            //omastar.Movement(gameTime);
-            omastar.Update(gameTime);
-            //whirlpool.Animate(gameTime);
+            ftr.Update(gameTime);
+            ftr2.Update(gameTime);
             //a.Animate(gameTime);
             b.X += (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
             //Drawer.m += gameTime.ElapsedGameTime.TotalSeconds;
@@ -136,10 +145,10 @@ namespace _30XXRemakeRemake
 
             //spriteBatch.Draw(Content.Load<Texture2D>("Textures/whirlpool"), new Rectangle(10, 10, 120, 10), Color.White);
             //The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
-            //spriteBatch.Draw(omastar.walking.SpriteTexture, omastar.Position, new Rectangle(0, 0, omastar.hitbox.Width, omastar.hitbox.Height), Color.White, 0f, new Vector2(0, 0), 1, omastar.Facing, 0f);
-            omastar.Draw(spriteBatch, gameTime);
+            ftr.Draw(spriteBatch, gameTime);
+            ftr2.Draw(spriteBatch, gameTime);
 
-            spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), omastar.hitbox.Intersects(tt.hbRect).ToString() + ", (" + omastar.Position.X + ", " + omastar.Position.Y + ")", new Vector2(200, 10), Color.Black);
+            spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), ftr.hitbox.Intersects(tt.hbRect).ToString() + ", (" + ftr.Position.X + ", " + ftr.Position.Y + ")", new Vector2(200, 10), Color.Black);
 
             spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/Courier New"), Drawer.m.ToString(), new Vector2(600, 10), Color.White);
 

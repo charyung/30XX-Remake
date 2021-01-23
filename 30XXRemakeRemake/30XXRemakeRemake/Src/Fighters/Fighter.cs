@@ -42,9 +42,10 @@ namespace _30XXRemakeRemake
 		public int percent = 0; //The percentage the fighter is at. The higher means the more injured they are.
 
 		protected Vector2 vel = new Vector2(0, 0);
-		protected Vector2 accel = new Vector2(4, 3);
+		protected Vector2 accel = new Vector2(0, 3);
 		//The Y parameter of maxVel is basically max jump height here, combined with accel.Y.
 		protected Vector2 maxVel = new Vector2(5, 7);
+		protected float airResist = 1; // Air resistance
 
 		protected Vector2 position;
 		protected Animation idle;
@@ -63,21 +64,25 @@ namespace _30XXRemakeRemake
 		KeyboardState prevKBS;
 		KeyboardState currKBS;
 
+		protected bool isPlayer;
+
 		protected List<(ActionTypes type, Attack attack)> activeAttacks = new List<(ActionTypes type, Attack attack)>();
 
 		///<summary>
 		///Constructor for the Fighter class.
 		///</summary>
+		///<param name="isPlayer">Whether the fighter is player controlled</param>
 		///<param name="position"> The position on the screen where the fighter is.</param>
 		///<param name="sWidth"> The width of this fighter's sprite. </param>
 		///<param name="sHeight"> The height of thie fighter's sprite. </param>
 		///<param name="speed"> The speed of this fighter. </param>
-		protected Fighter(Vector2 position, int sWidth, int sHeight, float speed, float jumpHeight)
+		protected Fighter(bool isPlayer, Vector2 position, int sWidth, int sHeight, float speed, float jumpHeight)
 		{
 
 			this.position = position;
 			this.speed = speed;
 			this.jumpHeight = jumpHeight;
+			this.isPlayer = isPlayer;
 
 			hitbox = new Rectangle((int)position.X, (int)position.Y, sWidth, sHeight);
 		}
@@ -114,13 +119,14 @@ namespace _30XXRemakeRemake
 
 		public void Movement(GameTime gt)
 		{
+			if (!isPlayer) return;
+
 			prevKBS = currKBS;
 			currKBS = Keyboard.GetState();
 
 			if (currKBS.IsKeyDown(Keys.Left))
 			{
-				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, gt);
-				position.X += -vel.X * speed;
+				accel.X = -4;
 				currAnimation = walking;
 				facing = "Left";
 				facingVisual = SpriteEffects.FlipHorizontally;
@@ -128,8 +134,7 @@ namespace _30XXRemakeRemake
 			}
 			else if (currKBS.IsKeyDown(Keys.Right))
 			{
-				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, gt);
-				position.X += vel.X * speed;
+				accel.X = 4;
 				currAnimation = walking;
 				facing = "Right";
 				facingVisual = SpriteEffects.None;
@@ -138,7 +143,7 @@ namespace _30XXRemakeRemake
 			else
 			{
 				state = FighterStates.Normal;
-				vel.X = 0;
+				accel.X = 0;
 			}
 
 			if (state != FighterStates.Normal && state != FighterStates.Walking)
@@ -165,6 +170,8 @@ namespace _30XXRemakeRemake
 		//A function for all the attacks
 		private void Attack(GameTime gt)
 		{
+			if (!isPlayer) return;
+
 			if ((state != FighterStates.Normal && state != FighterStates.Walking) || cdTimer > 0)
 				return;
 			
@@ -201,6 +208,44 @@ namespace _30XXRemakeRemake
 			state = FighterStates.Normal;
 		}
 
+		/// <summary>
+		///		Set velocity according to the given knockback values
+		/// </summary>
+		/// <param name="angle">Angle in radians. -pi &lt;= x &lt;= pi</param>
+		/// <param name="amount">The hypotenuse of the triangle</param>
+		internal void TakeKnockback(double angle, double amount)
+		{
+			int xMod = 1;
+			int yMod = 1;
+
+			if (angle < Math.PI / 2)
+			{
+				// 3rd quadrant
+				xMod = -1;
+				angle = Math.PI - (angle * -1);
+			}
+			else if (angle < 0)
+			{
+				// 4th quadrant
+				angle *= -1;
+			}
+			else if (angle < Math.PI / 2)
+			{
+				// 1st quadrant
+				yMod = -1;
+			}
+			else
+			{
+				// 2nd quadrant
+				xMod = -1;
+				yMod = -1;
+				angle = Math.PI - angle;
+			}
+
+			vel.X = (float) (Math.Sin(angle) * amount * xMod);
+			vel.Y = (float) (Math.Cos(angle) * amount * yMod);
+		}
+
 		protected abstract void NeutralB();
 		protected abstract void SideB();
 		protected abstract void UpB();
@@ -221,7 +266,7 @@ namespace _30XXRemakeRemake
 		{
 			if (state == FighterStates.Paused)
 			{
-				vel.Y = 0;
+				vel = Vector2.Zero;
 			}
 			else
 			{
@@ -235,7 +280,7 @@ namespace _30XXRemakeRemake
 				{
 					isJumping = false;
 					jumpCount = 2;
-					vel.Y = 0;
+					vel.Y = Math.Min(vel.Y, 0);
 					// Prevent the player from falling into the ground. The -1 makes sure that the player doesn't keep hovering just above the ground, causing them to vibrate up and down
 					position.Y -= (position.Y + hitbox.Height - Physics.StageHitbox.Y - 1);
 
@@ -244,22 +289,21 @@ namespace _30XXRemakeRemake
 						state = FighterStates.Normal;
 					}
 				}
-			}
-			
 
-			if (state != FighterStates.Paused)
-			{
 				Movement(gt);
-			}
 
-			Attack(gt);
+				Attack(gt);
+
+				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, airResist, gt);
+
+				position.X += (int)vel.X;
+				position.Y += (int)vel.Y;
+			}
 
 			if (state == FighterStates.Normal)
 			{
 				currAnimation = idle;
 			}
-
-			position.Y += vel.Y;
 			
 			hitbox.X = (int)position.X;
 			hitbox.Y = (int)position.Y;

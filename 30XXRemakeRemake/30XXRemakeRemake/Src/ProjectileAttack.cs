@@ -22,7 +22,7 @@ namespace _30XXRemakeRemake
 
         public override void Update(GameTime gt)
         {
-            _vel.X = Physics.CalcVel(_vel.X, _accel.X, 10, gt);
+            _vel.X = Physics.CalcVel(_vel.X, _accel.X, 10, 1, gt);
             position.X += (int)_vel.X;
 			hitbox.X += (int)_vel.X;
         }

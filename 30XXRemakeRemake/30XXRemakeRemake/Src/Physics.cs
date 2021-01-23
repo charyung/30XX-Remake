@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework;
 
 namespace _30XXRemakeRemake
 {
-    static class Physics
+    internal static class Physics
     {
-	    private static readonly Dictionary<Fighter, Rectangle> HitboxesAndOwners = new Dictionary<Fighter, Rectangle>();
+	    internal static readonly HashSet<Fighter> Fighters = new HashSet<Fighter>();
 
 	    private static readonly List<IUpdatable> UpdateList = new List<IUpdatable>();
 	    //so unlike Flixel, XNA doesn't have all the fancy physics stuff already set up, so I'll have to make my own (aka copy Flixel's)
@@ -30,16 +30,15 @@ namespace _30XXRemakeRemake
         /// <param name="vel"> The object's current velocity. </param>
         /// <param name="accel"> The object's current acceleration. </param>
         /// <param name="maxVel"> The quickest the object can go. </param>
+        /// <param name="airResist">The object's air resistance.</param>
         /// <param name="gt"> The games' GameTime. It's probably called "gameTime" or "gt". </param>
         /// <returns></returns>
-        public static float CalcVel(float vel, float accel, float maxVel, GameTime gt)
-        {
+        public static float CalcVel(float vel, float accel, float maxVel, float airResist, GameTime gt)
+	    {
+		    airResist *= vel == 0 ? 0 : -(vel / Math.Abs(vel)); // Make air resistance always opposite of velocity
 			//this is kind of shit lol
 			//Try googling some physics formulas
-            if (Math.Abs(accel) > 0.0001)
-            {
-                vel += accel * (float)gt.ElapsedGameTime.TotalSeconds;
-            }
+            vel += (accel + airResist) * (float)gt.ElapsedGameTime.TotalSeconds;
 
             if (vel > maxVel)
             {
@@ -52,7 +51,7 @@ namespace _30XXRemakeRemake
 	    public static float Gravity(Vector2 pos, Vector2 vel, Vector2 accel, float maxVel, GameTime gt)
         {
             accel.Y += 9.8f;
-	        vel.Y = CalcVel(vel.Y, accel.Y, maxVel, gt);
+	        vel.Y = CalcVel(vel.Y, accel.Y, maxVel, 0, gt);
 	        return vel.Y;
         }
 
@@ -69,7 +68,7 @@ namespace _30XXRemakeRemake
         /// <param name="hitbox"> The Fighter's hitbox. </param>
         public static void AddToCollisions(Fighter source, Rectangle hitbox)
         {
-            HitboxesAndOwners.Add(source, hitbox);
+            Fighters.Add(source);
         }
 
 	    /// <summary>
@@ -78,11 +77,11 @@ namespace _30XXRemakeRemake
         public static void CollisionsWithStage()
         {
             //Possibly find a method that isn't highly inefficient?
-            foreach (KeyValuePair<Fighter, Rectangle> hbObject in HitboxesAndOwners)
+            foreach (Fighter fighter in Fighters)
             {
-                if (hbObject.Value.Intersects(StageHitbox))
+                if (fighter.hitbox.Intersects(StageHitbox))
                 {
-                    hbObject.Key.Vel = new Vector2(hbObject.Key.Vel.X, 0);
+                    fighter.Vel = new Vector2(fighter.Vel.X, 0);
                 }
             }
         }
