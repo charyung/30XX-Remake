@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -21,6 +18,7 @@ using Microsoft.Xna.Framework.Input;
  * - Unify all the physics calculations
  * - Improve physics calculations
  * - Unify variable naming scheme
+ * . Fix stage rendering (Fixed in Monogame 3.8.1)
  */
 
 
