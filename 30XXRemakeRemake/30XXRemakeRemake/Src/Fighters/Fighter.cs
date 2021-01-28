@@ -40,7 +40,7 @@ namespace _30XXRemakeRemake
 		protected float jumpHeight;
 		protected float speed; // The fighter's own moving speed.
 
-		public int percent = 0; //The percentage the fighter is at. The higher means the more injured they are.
+		public double Percent { get; set; } = 0; //The percentage the fighter is at. The higher means the more injured they are.
 
 		protected Vector2 vel = new Vector2(0, 0);
 		protected Vector2 accel = new Vector2(0, 3);

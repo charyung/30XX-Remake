@@ -6,7 +6,7 @@ namespace _30XXRemakeRemake
 {
     internal static class Physics
     {
-	    internal static readonly HashSet<Fighter> Fighters = new HashSet<Fighter>();
+	    internal static readonly List<Fighter> Fighters = new List<Fighter>();
 
 	    private static readonly List<IUpdatable> UpdateList = new List<IUpdatable>();
 	    //so unlike Flixel, XNA doesn't have all the fancy physics stuff already set up, so I'll have to make my own (aka copy Flixel's)

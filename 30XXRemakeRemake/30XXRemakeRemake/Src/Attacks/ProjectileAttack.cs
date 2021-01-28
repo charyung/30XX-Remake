@@ -31,6 +31,7 @@ namespace _30XXRemakeRemake
 			foreach (Fighter fighter in fightersWithoutUser.Where(fighter => hitbox.Intersects(fighter.hitbox)))
 			{
 				fighter.TakeKnockback(kbAngle, kb);
+				fighter.Percent += dmg;
 			}
         }
     }
