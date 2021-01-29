@@ -9,12 +9,12 @@ using Microsoft.Xna.Framework.Input;
  * - Fix player at wrong height on the ground
  * - Use currAnimation in Omastar
  * - Update gitignore
- * - Improve animations
+ * * Improve animations
  *  - Allow for pausing fighter at different times
  *  - Delayed animation
  *  - Moving hitbox
- * - Attacks
- *  - Damage %
+ * . Attacks
+ *  . Damage %
  * - Unify all the physics calculations
  * - Improve physics calculations
  * - Unify variable naming scheme

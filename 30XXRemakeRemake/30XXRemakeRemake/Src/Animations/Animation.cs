@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _30XXRemakeRemake
+namespace _30XXRemakeRemake.Animations
 {
     class Animation
     {
