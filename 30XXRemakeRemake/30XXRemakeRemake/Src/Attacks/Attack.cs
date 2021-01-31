@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using _30XXRemakeRemake.Animations;
+using _30XXRemakeRemake.Src.Attacks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,9 +15,10 @@ namespace _30XXRemakeRemake
         protected double kbAngle;
         protected bool pauseUser = false;
         private float interval = 0;
-        protected Rectangle position;
         public Rectangle hitbox;
+        protected Rectangle position;
         protected Animation spriteTexture;
+        private List<AttackFrame> _attackFrames;
 
         //ok are you ready
         //for some spaghetti
