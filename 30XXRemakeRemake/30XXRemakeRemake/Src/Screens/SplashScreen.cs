@@ -38,7 +38,7 @@ namespace _30XXRemakeRemake.Screens
 			Point mouseLocation = new Point(mouseState.X, mouseState.Y);
 			if (_cssButtonLocation.Contains(mouseLocation))
 			{
-				ScreenManager.LoadScreen(new GameplayScreen(Game), new FadeTransition(GraphicsDevice, Color.Black));
+				ScreenManager.LoadScreen(new CharSelectScreen(Game), new FadeTransition(GraphicsDevice, Color.Black));
 			}
 		}
 
