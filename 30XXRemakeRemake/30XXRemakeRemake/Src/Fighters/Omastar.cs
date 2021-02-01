@@ -72,7 +72,6 @@ namespace _30XXRemakeRemake
 	        int positionX = (int)Position.X + (facing == "Left" ? -46 : 36);
 	        int positionY = (int)Position.Y + 35;
 	        Rectangle atkPosition = new Rectangle(positionX, positionY, 60, 5);
-	        Rectangle atkHitbox = atkPosition;
 	        double kbAngle = facing == "Left" ? 5 * Math.PI / 6 : Math.PI / 6;
 
 			List<AttackFrame> attackFrames = new List<AttackFrame>()
