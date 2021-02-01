@@ -7,7 +7,7 @@ namespace _30XXRemakeRemake.Animations
     class Animation
     {
 	    int _currentFrame = 1;
-	    readonly float interval = 55f; //how long each frame lasts, in millseconds
+	    readonly float interval; //how long each frame lasts, in millseconds
 	    readonly bool loop;
 	    readonly string nextFrame = ""; //Whether the next frame is right of or below the current sprite frame on the spritesheet. So for example, whirlpool.png would be vertical.
 	    readonly int numberOfFrames = 1;

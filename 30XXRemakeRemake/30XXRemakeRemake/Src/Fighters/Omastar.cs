@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _30XXRemakeRemake.Animations;
+using _30XXRemakeRemake.Src.Attacks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -74,8 +75,18 @@ namespace _30XXRemakeRemake
 	        Rectangle atkHitbox = atkPosition;
 	        double kbAngle = facing == "Left" ? 5 * Math.PI / 6 : Math.PI / 6;
 
+			List<AttackFrame> attackFrames = new List<AttackFrame>()
+			{
+				new AttackFrame(new Rectangle(facing == "Left" ? positionX + 50 : positionX, positionY, 10, 5)),
+				new AttackFrame(new Rectangle(facing == "Left" ? positionX + 40 : positionX, positionY, 20, 5)),
+				new AttackFrame(new Rectangle(facing == "Left" ? positionX + 30 : positionX, positionY, 30, 5)),
+				new AttackFrame(new Rectangle(facing == "Left" ? positionX + 20 : positionX, positionY, 40, 5)),
+				new AttackFrame(new Rectangle(facing == "Left" ? positionX + 10 : positionX, positionY, 50, 5)),
+				new AttackFrame(new Rectangle(positionX, positionY, 60, 5))
+			};
+
 			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
-			MeleeAttack sb = new MeleeAttack(direction, _charTextures[2], atkPosition, atkHitbox, 6, "V", this, 20, 5, kbAngle, true);
+			MeleeAttack_new sb = new MeleeAttack_new(direction, _charTextures[2], atkPosition, attackFrames, 6, "V", this, 20, 5, kbAngle, true);
 			activeAttacks.Add((ActionTypes.SideSp, sb));
 		}
 

@@ -68,7 +68,8 @@ namespace _30XXRemakeRemake
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            ScreenManager.LoadScreen(new SplashScreen(this), new FadeTransition(GraphicsDevice, Color.Black));
+            //ScreenManager.LoadScreen(new SplashScreen(this), new FadeTransition(GraphicsDevice, Color.Black));
+            ScreenManager.LoadScreen(new GameplayScreen(this, typeof(Omastar)), new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         internal static SpriteFont GameFont;

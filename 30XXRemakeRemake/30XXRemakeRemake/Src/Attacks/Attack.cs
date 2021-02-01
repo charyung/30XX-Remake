@@ -18,7 +18,10 @@ namespace _30XXRemakeRemake
         public Rectangle hitbox;
         protected Rectangle position;
         protected Animation spriteTexture;
+
         private List<AttackFrame> _attackFrames;
+        private int _currentFrame;
+        private double _timer;
 
         //ok are you ready
         //for some spaghetti
@@ -41,11 +44,12 @@ namespace _30XXRemakeRemake
         /// <param name="kbAngle"> The angle, in radians, in which this attack sends the target. </param>
         /// <param name="pauseUser"> Whether the usage of this attack prevents the user from moving. </param>
         /// <param name="interval"> The number of milliseconds between each frame. The higher the number, the slower the animation. </param>
-        protected Attack(string direction, Texture2D sprite, Rectangle position, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f)
+        protected Attack(string direction, Texture2D sprite, Rectangle position, Rectangle hitbox, int frames, string nextFrame, Fighter user, double dmg, double kb, double kbAngle, bool pauseUser, float interval = 55f, List<AttackFrame> attackFrames = null)
         {
             this.direction = direction;
             this.position = position;
             this.hitbox = hitbox;
+            _attackFrames = attackFrames;
             this.user = user;
             this.dmg = dmg;
             this.kb = kb;
@@ -54,7 +58,7 @@ namespace _30XXRemakeRemake
             this.interval = interval;
 
             //just make animation along with this class upon loading?
-            spriteTexture = new Animation(sprite, new Rectangle(0, 0, hitbox.Width, hitbox.Height), frames, nextFrame, false, interval);
+            spriteTexture = new Animation(sprite, new Rectangle(0, 0, position.Width, position.Height), frames, nextFrame, false, interval);
         }
 
         public Animation SpriteTexture
@@ -74,6 +78,22 @@ namespace _30XXRemakeRemake
 
 	    public virtual void Update(GameTime gt)
 	    {
+		    if (_attackFrames == null) return;
+
+		    _timer += gt.ElapsedGameTime.TotalMilliseconds;
+
+		    if (_timer < _attackFrames[_currentFrame].Duration)
+			    return;
+
+		    _currentFrame++;
+
+		    if (_currentFrame >= _attackFrames.Count)
+		    {
+				_currentFrame--;
+		    }
+
+            hitbox = _attackFrames[_currentFrame].Hitbox;
+            _timer = 0;
 	    }
 
 	    public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
