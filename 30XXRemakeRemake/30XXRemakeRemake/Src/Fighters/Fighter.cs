@@ -66,6 +66,7 @@ namespace _30XXRemakeRemake
 		KeyboardState currKBS;
 
 		protected bool isPlayer;
+		private int _livesLeft = 4;
 
 		protected List<(ActionTypes type, Attack attack)> activeAttacks = new List<(ActionTypes type, Attack attack)>();
 
@@ -301,6 +302,13 @@ namespace _30XXRemakeRemake
 			if (state == FighterStates.Normal)
 			{
 				currAnimation = idle;
+			}
+
+			if (position.Y + hitbox.Height > Game1.SCREEN_HEIGHT)
+			{
+				_livesLeft--;
+				position.Y = 0;
+				position.X = 50;
 			}
 			
 			hitbox.X = (int)position.X;
