@@ -66,11 +66,6 @@ namespace _30XXRemakeRemake
             get { return spriteTexture; }
         }
 
-        public Rectangle Hitbox
-        {
-            get { return hitbox; }
-        }
-
         public Rectangle Position
         {
             get { return position; }

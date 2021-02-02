@@ -67,6 +67,7 @@ namespace _30XXRemakeRemake
 		KeyboardState currKBS;
 
 		protected bool isPlayer;
+		internal int LivesLeft = 4;
 
 		protected List<(ActionTypes type, Attack attack)> activeAttacks = new List<(ActionTypes type, Attack attack)>();
 
@@ -295,13 +296,22 @@ namespace _30XXRemakeRemake
 
 				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, AirRes, gt);
 
-				position.X += (int)vel.X;
-				position.Y += (int)vel.Y;
+				position.X += vel.X;
+				position.Y += vel.Y;
+
+				position.X = (float) Math.Round(position.X);
 			}
 
 			if (state == FighterStates.Normal)
 			{
 				currAnimation = idle;
+			}
+
+			if (position.Y + hitbox.Height > Game1.SCREEN_HEIGHT)
+			{
+				LivesLeft--;
+				position.Y = 0;
+				position.X = 50;
 			}
 			
 			hitbox.X = (int)position.X;

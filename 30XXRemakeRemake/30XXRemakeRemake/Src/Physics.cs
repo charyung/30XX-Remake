@@ -35,7 +35,7 @@ namespace _30XXRemakeRemake
         /// <returns></returns>
         public static float CalcVel(float vel, float accel, float maxVel, float airResist, GameTime gt)
 	    {
-		    airResist *= -(vel / 2); // Make air resistance always opposite of velocity, and scale it to velocity
+		    airResist *= -(3 * vel / 2); // Make air resistance always opposite of velocity, and scale it to velocity
 			//this is kind of shit lol
 			//Try googling some physics formulas
             vel += (accel + airResist) * (float)gt.ElapsedGameTime.TotalSeconds;
