@@ -19,7 +19,7 @@ namespace _30XXRemakeRemake.UI
 			for (int i = 0; i < Physics.Fighters.Count; i++)
 			{
 				Fighter fighter = Physics.Fighters[i];
-				_damageCounters.Add(new DamageCounter(i * unitWidth + 50, Game1.SCREEN_HEIGHT - 150, fighter.GetType(), fighter.Percent, fighter.LivesLeft, content, Game1.GameFont));
+				_damageCounters.Add(new DamageCounter(i * unitWidth + 50, Game1.SCREEN_HEIGHT - 150, fighter, content, Game1.GameFont));
 			}
 		}
 

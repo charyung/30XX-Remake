@@ -14,9 +14,7 @@ namespace _30XXRemakeRemake.UI
 			{ typeof(Ampharos), "Textures/p1Amp" }
 		};
 
-		private readonly Type _fighterType;
-		internal double Percent { get; set; }
-		internal int LivesLeft { get; set; }
+		private readonly Fighter _fighter;
 
 		private readonly Texture2D _lifeTexture;
 		private readonly Vector2 _position;
@@ -28,17 +26,13 @@ namespace _30XXRemakeRemake.UI
 		/// </summary>
 		/// <param name="x">The X value of this counter's position</param>
 		/// <param name="y">The Y value of this counter's position</param>
-		/// <param name="fighterType">The type of fighter to represent</param>
-		/// <param name="percent">The perecent the fighter is at</param>
-		/// <param name="livesLeft">The amount of lives the figher has left</param>
+		/// <param name="fighter">The fighter this counter represents</param>
 		/// <param name="content">The ContentManager</param>
 		/// <param name="gameFont">The SpriteFont</param>
-		internal DamageCounter(int x, int y, Type fighterType, double percent, int livesLeft, ContentManager content, SpriteFont gameFont)
+		internal DamageCounter(int x, int y, Fighter fighter, ContentManager content, SpriteFont gameFont)
 		{
-			_fighterType = fighterType;
-			_lifeTexture = content.Load<Texture2D>(typeToTexture[fighterType]);
-			Percent = percent;
-			LivesLeft = livesLeft;
+			_fighter = fighter;
+			_lifeTexture = content.Load<Texture2D>(typeToTexture[fighter.GetType()]);
 			_position = new Vector2(x, y);
 			_gameFont = gameFont;
 		}
@@ -46,14 +40,14 @@ namespace _30XXRemakeRemake.UI
 		internal void Draw(SpriteBatch spriteBatch)
 		{
 			float livesX = _position.X;
-			for (int i = 0; i < LivesLeft; i++)
+			for (int i = 0; i < _fighter.LivesLeft; i++)
 			{
 				spriteBatch.Draw(_lifeTexture, new Vector2(livesX, _position.Y), new Rectangle(0, 0, 50, 50), Color.White, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
 
 				livesX += 30;
 			}
 
-			spriteBatch.DrawString(_gameFont, Percent + "%", new Vector2(_position.X, _position.Y + 30), Color.Black, 0, Vector2.Zero, 3, SpriteEffects.None, 0);
+			spriteBatch.DrawString(_gameFont, _fighter.Percent + "%", new Vector2(_position.X, _position.Y + 30), Color.Black, 0, Vector2.Zero, 3, SpriteEffects.None, 0);
 		}
 	}
 }
