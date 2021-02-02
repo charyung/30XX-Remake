@@ -22,6 +22,7 @@ using MonoGame.Extended.Screens.Transitions;
  * - Move GameFont elsewhere
  * - Add stage properties (e.g. blast zones)
  * - Add AI
+ * - Hold down to fall faster
  */
 
 
