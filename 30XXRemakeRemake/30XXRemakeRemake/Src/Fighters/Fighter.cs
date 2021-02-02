@@ -295,8 +295,10 @@ namespace _30XXRemakeRemake
 
 				vel.X = Physics.CalcVel(vel.X, accel.X, maxVel.X, AirRes, gt);
 
-				position.X += (int)vel.X;
-				position.Y += (int)vel.Y;
+				position.X += vel.X;
+				position.Y += vel.Y;
+
+				position.X = (float) Math.Round(position.X);
 			}
 
 			if (state == FighterStates.Normal)
