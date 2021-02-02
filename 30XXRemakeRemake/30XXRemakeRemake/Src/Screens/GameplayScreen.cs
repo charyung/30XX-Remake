@@ -13,14 +13,11 @@ namespace _30XXRemakeRemake.Screens
 	{
 		private new Game1 Game => (Game1)base.Game;
 
-		//private ProjectileAttack atk;
-		Fighter ftr;
-		private Fighter ftr2;
-		private Type _selectedFighter;
-		Stage tt;
-		DamageOverlay damageOverlay;
-		//Animation a;
-		Vector2 b = new Vector2(10, 100);
+		private Fighter _fighter;
+		private Fighter _fighter2;
+		private readonly Type _selectedFighter;
+		private Stage _stage;
+		private DamageOverlay _damageOverlay;
 
 		public GameplayScreen(Game1 game, Type selectedFighter) : base(game)
 		{
@@ -31,21 +28,16 @@ namespace _30XXRemakeRemake.Screens
 		public override void LoadContent()
 		{
 			base.LoadContent();
-			//a = new Animation(Content.Load<Texture2D>("Textures/omastar2"), new Rectangle(0, 0, 51, 44), 2, "H", true);
-			//Texture2D atkTexture = Content.Load<Texture2D>("Textures/rockBlast");
-			//atk = new ProjectileAttack(new Vector2(-1, 0), new Vector2(-0.01f, 0), "Left", atkTexture, new Rectangle((int)100, 150, 30, 30), new Rectangle(100, 150, 30, 30), 6, "H", ftr2, 20, 10, Math.PI - Math.PI / 6, true);
+			_stage = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
+			Physics.StageHitbox = _stage.hbRect;
 
-			//tt = new Stage(Content.Load<Texture2D>("textures/temporalTower"), new Rectangle(27, 132, 637, 144));
-			tt = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
-			Physics.StageHitbox = tt.hbRect;
+			_fighter = (Fighter) Activator.CreateInstance(_selectedFighter, true, new Vector2(200, 100), Content);
+			//_fighter = new Omastar(true, new Vector2(200, 100), Content);
+			_fighter2 = new Ampharos(false, new Vector2(300, 100), Content);
+			Physics.AddToCollisions(_fighter, _fighter.hitbox);
+			Physics.AddToCollisions(_fighter2, _fighter2.hitbox);
 
-			ftr = (Fighter) Activator.CreateInstance(_selectedFighter, true, new Vector2(200, 100), Content);
-			//ftr = new Omastar(true, new Vector2(200, 100), Content);
-			ftr2 = new Ampharos(false, new Vector2(300, 100), Content);
-			Physics.AddToCollisions(ftr, ftr.hitbox);
-			Physics.AddToCollisions(ftr2, ftr2.hitbox);
-
-			damageOverlay = new DamageOverlay(Game.Content);
+			_damageOverlay = new DamageOverlay(Game.Content);
 		}
 
 		public override void Update(GameTime gameTime)
@@ -54,10 +46,8 @@ namespace _30XXRemakeRemake.Screens
 				Game.Exit();
 
 			// TODO: Add your update logic here
-			ftr.Update(gameTime);
-			ftr2.Update(gameTime);
-			//a.Animate(gameTime);
-			b.X += (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+			_fighter.Update(gameTime);
+			_fighter2.Update(gameTime);
 
 			Physics.Update(gameTime);
 
@@ -69,20 +59,18 @@ namespace _30XXRemakeRemake.Screens
 
 			// TODO: Add your drawing code here
 			Game.SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp);
-			Game.SpriteBatch.Draw(tt.Img, new Vector2(0, 0), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
-
-			//Game.SpriteBatch.Draw(a.SpriteTexture, b, a.SourceRect, Color.White);
+			Game.SpriteBatch.Draw(_stage.Img, new Vector2(0, 0), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
 
 			//The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
-			ftr.Draw(Game.SpriteBatch, gameTime);
-			ftr2.Draw(Game.SpriteBatch, gameTime);
+			_fighter.Draw(Game.SpriteBatch, gameTime);
+			_fighter2.Draw(Game.SpriteBatch, gameTime);
 
-			Game.SpriteBatch.DrawString(Game1.GameFont, ftr.hitbox.Intersects(tt.hbRect).ToString() + ", (" + ftr.Position.X + ", " + ftr.Position.Y + ")", new Vector2(200, 10), Color.Black);
+			Game.SpriteBatch.DrawString(Game1.GameFont, _fighter.hitbox.Intersects(_stage.hbRect).ToString() + ", (" + _fighter.Position.X + ", " + _fighter.Position.Y + ")", new Vector2(200, 10), Color.Black);
 
 			Game.SpriteBatch.DrawString(Game1.GameFont, Drawer.m.ToString(), new Vector2(600, 10), Color.White);
 
 			Drawer.Draw(Game.SpriteBatch, gameTime);
-			damageOverlay.Draw(Game.SpriteBatch);
+			_damageOverlay.Draw(Game.SpriteBatch);
 			Game.SpriteBatch.End();
 		}
 	}

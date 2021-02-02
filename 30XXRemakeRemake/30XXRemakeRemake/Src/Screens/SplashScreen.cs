@@ -15,7 +15,7 @@ namespace _30XXRemakeRemake.Screens
 
 		private Texture2D _logo;
 		private Texture2D _cssButton;
-		private Rectangle _cssButtonLocation = new Rectangle(40, 110, 250, 110);
+		private Rectangle _cssButtonLocation = new Rectangle(40, 500, 250, 110);
 
 		public SplashScreen(Game1 game) : base(game)
 		{

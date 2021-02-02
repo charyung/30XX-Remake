@@ -15,14 +15,11 @@ using MonoGame.Extended.Screens.Transitions;
  *  - Allow for pausing fighter at different times
  *  - Delayed animation
  *  - Moving hitbox
- * - Attacks
- *  - Damage %
  * - Unify all the physics calculations
  * - Improve physics calculations
  * - Unify variable naming scheme
  * - Fix stage rendering (Fixed in Monogame 3.8.1, https://github.com/MonoGame/MonoGame/issues/7298)
  * - Move GameFont elsewhere
- * - Add death
  * - Add stage properties (e.g. blast zones)
  * - Add AI
  */

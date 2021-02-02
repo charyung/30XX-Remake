@@ -35,7 +35,7 @@ namespace _30XXRemakeRemake.Screens
 		{
 			MouseState mouseState = Mouse.GetState();
 
-			Type selectedFighter;
+			Type selectedFighter = null;
 
 			if (mouseState.LeftButton != ButtonState.Pressed) return;
 
@@ -44,12 +44,15 @@ namespace _30XXRemakeRemake.Screens
 			{
 				selectedFighter = typeof(Omastar);
 			}
-			else
+			else if (_amphButtonLocation.Contains(mouseLocation))
 			{
 				selectedFighter = typeof(Ampharos);
 			}
 
-			ScreenManager.LoadScreen(new GameplayScreen(Game, selectedFighter), new FadeTransition(GraphicsDevice, Color.Black));
+			if (selectedFighter != null)
+			{
+				ScreenManager.LoadScreen(new GameplayScreen(Game, selectedFighter), new FadeTransition(GraphicsDevice, Color.Black));
+			}
 		}
 
 		public override void Draw(GameTime gameTime)
