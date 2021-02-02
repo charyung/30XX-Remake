@@ -9,7 +9,6 @@ using MonoGame.Extended.Screens.Transitions;
  * - how do projectile rendering???
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
- * - Fix player at wrong height on the ground
  * - Use currAnimation in Omastar
  * - Update gitignore
  * - Improve animations
@@ -23,6 +22,9 @@ using MonoGame.Extended.Screens.Transitions;
  * - Unify variable naming scheme
  * - Fix stage rendering (Fixed in Monogame 3.8.1, https://github.com/MonoGame/MonoGame/issues/7298)
  * - Move GameFont elsewhere
+ * - Add death
+ * - Add stage properties (e.g. blast zones)
+ * - Add AI
  */
 
 
@@ -49,8 +51,8 @@ namespace _30XXRemakeRemake
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;  // set this value to the desired width of your window
-            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;   // set this value to the desired height of your window
+            //graphics.PreferredBackBufferWidth = SCREEN_WIDTH;  // set this value to the desired width of your window
+            //graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;   // set this value to the desired height of your window
             //graphics.ApplyChanges();
 
             ScreenManager = new ScreenManager();
@@ -68,6 +70,12 @@ namespace _30XXRemakeRemake
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            //graphics = new GraphicsDeviceManager(this);
+
+            // TODO: When Monogame 3.8.1 releases, move back to constructor
+            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
             ScreenManager.LoadScreen(new SplashScreen(this), new FadeTransition(GraphicsDevice, Color.Black));
         }
 

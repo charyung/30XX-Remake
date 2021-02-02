@@ -66,7 +66,7 @@ namespace _30XXRemakeRemake
 		KeyboardState currKBS;
 
 		protected bool isPlayer;
-		private int _livesLeft = 4;
+		internal int LivesLeft = 4;
 
 		protected List<(ActionTypes type, Attack attack)> activeAttacks = new List<(ActionTypes type, Attack attack)>();
 
@@ -306,7 +306,7 @@ namespace _30XXRemakeRemake
 
 			if (position.Y + hitbox.Height > Game1.SCREEN_HEIGHT)
 			{
-				_livesLeft--;
+				LivesLeft--;
 				position.Y = 0;
 				position.X = 50;
 			}

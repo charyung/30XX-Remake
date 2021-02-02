@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using _30XXRemakeRemake.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -44,7 +45,7 @@ namespace _30XXRemakeRemake.Screens
 			Physics.AddToCollisions(ftr, ftr.hitbox);
 			Physics.AddToCollisions(ftr2, ftr2.hitbox);
 
-			damageOverlay = new DamageOverlay();
+			damageOverlay = new DamageOverlay(Game.Content);
 		}
 
 		public override void Update(GameTime gameTime)
