@@ -68,18 +68,14 @@ namespace _30XXRemakeRemake
             // TODO: Add your initialization logic here
 
             base.Initialize();
-<<<<<<< HEAD
-            //ScreenManager.LoadScreen(new SplashScreen(this), new FadeTransition(GraphicsDevice, Color.Black));
-            ScreenManager.LoadScreen(new GameplayScreen(this, typeof(Omastar)), new FadeTransition(GraphicsDevice, Color.Black));
-=======
             //graphics = new GraphicsDeviceManager(this);
 
             // TODO: When Monogame 3.8.1 releases, move back to constructor
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;   // set this value to the desired height of your window
             graphics.ApplyChanges();
-            ScreenManager.LoadScreen(new SplashScreen(this), new FadeTransition(GraphicsDevice, Color.Black));
->>>>>>> master
+            //ScreenManager.LoadScreen(new SplashScreen(this), new FadeTransition(GraphicsDevice, Color.Black));
+            ScreenManager.LoadScreen(new GameplayScreen(this, typeof(Omastar)), new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         internal static SpriteFont GameFont;
