@@ -73,6 +73,8 @@ namespace _30XXRemakeRemake
 
 	    public virtual void Update(GameTime gt)
 	    {
+            spriteTexture.Animate(gt);
+
 		    if (_attackFrames == null) return;
 
 		    _timer += gt.ElapsedGameTime.TotalMilliseconds;
@@ -96,7 +98,6 @@ namespace _30XXRemakeRemake
             SpriteEffects effect = direction == "Left" ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(spriteTexture.SpriteTexture, Position, spriteTexture.SourceRect, Color.White,
 			    0, Vector2.Zero, effect, 0);
-            spriteTexture.Animate(gameTime);
         }
 
 	    internal virtual void Cleanup() {}

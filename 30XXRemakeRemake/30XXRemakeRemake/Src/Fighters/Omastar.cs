@@ -85,7 +85,7 @@ namespace _30XXRemakeRemake
 			};
 
 			//The plan for MeleeMoves is to make it so we can make the hitbox rectangles here go from 10 to 60, 10 at a time.
-			MeleeAttack_new sb = new MeleeAttack_new(direction, _charTextures[2], atkPosition, attackFrames, 6, "V", this, 20, 5, kbAngle, true);
+			MeleeAttack sb = new MeleeAttack(direction, _charTextures[2], atkPosition, attackFrames, 6, "V", this, 20, 5, kbAngle, true);
 			activeAttacks.Add((ActionTypes.SideSp, sb));
 		}
 
@@ -102,7 +102,23 @@ namespace _30XXRemakeRemake
 		    Rectangle atkHitbox = atkPosition;
 		    double kbAngle = Math.PI / 2;
 
-			MeleeAttack ub = new MeleeAttack(direction, _charTextures[3], atkPosition, atkHitbox, 12, "H", this, 5, 7, kbAngle, false);
+		    List<AttackFrame> attackFrames = new List<AttackFrame>()
+		    {
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 6)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 12)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 18)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 28)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 43)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 56)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 43)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 28)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 18)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 12)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 6)),
+			    new AttackFrame(new Rectangle(positionX, positionY, 30, 1))
+			};
+
+			MeleeAttack ub = new MeleeAttack(direction, _charTextures[3], atkPosition, attackFrames, 12, "H", this, 5, 7, kbAngle, false);
 
 		    activeAttacks.Add((ActionTypes.SideSp, ub));
 
