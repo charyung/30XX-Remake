@@ -311,6 +311,7 @@ namespace _30XXRemakeRemake
 				LivesLeft--;
 				position.Y = 0;
 				position.X = 50;
+				Percent = 0;
 			}
 			
 			hitbox.X = (int)position.X;

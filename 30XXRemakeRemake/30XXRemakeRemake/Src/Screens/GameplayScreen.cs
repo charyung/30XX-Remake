@@ -28,7 +28,7 @@ namespace _30XXRemakeRemake.Screens
 		public override void LoadContent()
 		{
 			base.LoadContent();
-			_stage = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 198, 947, 255));
+			_stage = new Stage(Content.Load<Texture2D>("Textures/temporalTower"), new Rectangle(38, 250, 947, 255));
 			Physics.StageHitbox = _stage.hbRect;
 
 			_fighter = (Fighter) Activator.CreateInstance(_selectedFighter, true, new Vector2(200, 100), Content);
@@ -59,7 +59,7 @@ namespace _30XXRemakeRemake.Screens
 
 			// TODO: Add your drawing code here
 			Game.SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp);
-			Game.SpriteBatch.Draw(_stage.Img, new Vector2(0, 0), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+			Game.SpriteBatch.Draw(_stage.Img, new Vector2(0, 52), new Rectangle(0, 0, 700, 500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
 
 			//The special feature here is source rectangle, which basically specifies which part of the spritesheet to use foror the sprite.
 			_fighter.Draw(Game.SpriteBatch, gameTime);

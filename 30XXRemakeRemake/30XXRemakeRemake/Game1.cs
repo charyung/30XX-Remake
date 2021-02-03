@@ -10,7 +10,6 @@ using MonoGame.Extended.Screens.Transitions;
  *  - Consider looking into DrawableGameComponents
  *  - Apparently that's a bad idea though?? hmm
  * - Use currAnimation in Omastar
- * - Update gitignore
  * - Improve animations
  *  - Allow for pausing fighter at different times
  *  - Delayed animation
